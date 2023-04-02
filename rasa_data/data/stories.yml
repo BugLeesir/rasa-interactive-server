@@ -1,0 +1,47 @@
+version: "3.1"
+
+stories:
+
+- story: greet and inform
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: inform
+  - action: utter_flood_prevention_info
+  - action: utter_ask_more_info
+
+- story: ask for flood prevention information
+  steps:
+  - intent: ask_flood_prevention
+  - action: utter_flood_prevention_info
+  - action: utter_ask_more_info
+
+- story: ask for flood level
+  steps:
+  - intent: ask_flood_level
+  - action: utter_flood_level_info
+  - action: utter_ask_more_info
+
+- story: thanks and goodbye
+  steps:
+  - intent: thanks
+  - action: utter_thanks
+  - intent: goodbye
+  - action: utter_goodbye
+
+
+- story: be happy
+  steps:
+    - intent: sad
+    - action: utter_sad
+
+
+- story: handle_weather_query
+  steps:
+  - intent: weather_inform
+  - action: utter_ask_location
+  - intent: ask_for_location
+  - action: action_fill_location
+  - action: action_weather_api
+  - action: utter_weather_info
+  - active_loop: null
