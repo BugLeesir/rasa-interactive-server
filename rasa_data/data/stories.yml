@@ -35,6 +35,10 @@ stories:
     - intent: sad
     - action: utter_sad
 
+- story: fill location
+  steps:
+    - intent: ask_for_location
+    - action: action_fill_location
 
 - story: handle_weather_query
   steps:
@@ -43,5 +47,5 @@ stories:
   - intent: ask_for_location
   - action: action_fill_location
   - action: action_weather_api
-  - action: utter_weather_info
-  - active_loop: null
+  # - action: utter_weather_info
+  # - active_loop: null

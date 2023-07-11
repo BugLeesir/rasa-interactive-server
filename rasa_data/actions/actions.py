@@ -63,19 +63,20 @@ class WeatherAPIAction(Action):
         return "action_weather_api"
 
     def run(self, dispatcher: CollectingDispatcher,tracker: Tracker,domain: DomainDict) -> List[Dict[Text, Any]]:
-        api_key = "7a2f481009dc95e40c26d42351201246"
-        location = tracker.latest_message['text']
-        base_url = "http://api.openweathermap.org/data/2.5/weather?"
-        complete_url = base_url + "appid=" + api_key + "&q=" + location
-        response = requests.get(complete_url)
-        data = response.json()
-        if data["cod"] != "404":
-            weather = data["weather"][0]["description"]
-            temperature = round(float(data["main"]["temp"]) - 273.15, 2)
-            wind_speed = data["wind"]["speed"]
-            dispatcher.utter_message(template="utter_weather_info", weather_description=weather, temperature=temperature, wind_speed=wind_speed)
-        else:
-            dispatcher.utter_message(template="utter_weather_error")
+        # api_key = "7a2f481009dc95e40c26d42351201246"
+        # location = tracker.latest_message['text']
+        # base_url = "http://api.openweathermap.org/data/2.5/weather?"
+        # complete_url = base_url + "appid=" + api_key + "&q=" + location
+        # response = requests.get(complete_url)
+        # data = response.json()
+        # if data["cod"] != "404":
+        #     weather = data["weather"][0]["description"]
+        #     temperature = round(float(data["main"]["temp"]) - 273.15, 2)
+        #     wind_speed = data["wind"]["speed"]
+        #     dispatcher.utter_message(template="utter_weather_info", weather_description=weather, temperature=temperature, wind_speed=wind_speed)
+        # else:
+        #     dispatcher.utter_message(template="utter_weather_error")
+        dispatcher.utter_message(f"你来自{location},现在程序正在开发中，请勿着急")
         return []
     
 class ActionFillLocation(Action):
@@ -85,6 +86,7 @@ class ActionFillLocation(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         # 获取用户位置
-        location=tracker.latest_message.get('text')
+        global location
+        location=tracker.latest_message.get('text') # 将用户回答的位置作为location
         # 将槽填充
         return [SlotSet('location',location)]
