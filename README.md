@@ -194,3 +194,6 @@ rasa run -m --enable-api --cors "*"  @REM 在后台运行，可在本地网页�
 ```
 
 ### 二，使用docker部署rasa项目
+```shell
+docker pull philoboy/rasa_zh_md
+```
