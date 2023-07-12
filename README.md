@@ -204,11 +204,13 @@ docker pull philoboy/rasa_zh_md
 按官方的解释为了避免容器使用root权限，因此容器默认被uid为1001的用户拥有，因此如果linux用户的uid不是1001就会碰到权限问题
 进入创建的rasa文件夹，运行以下指令
 ```shell
-docker run --name=rasa_init --user 1000(这里输入自己用的用户的uid) -v $PWD:/app rasa/rasa init --no-prompt
+docker run --name=rasa_init --user 1000(这里输入自己用的用户的uid) -v $PWD:/app philoboy/rasa_zh_md:1.0 init --no-prompt
 ```
 
 3.部署rasa shell与rasa机器人对话<br>
 因为init容器不会一直运行，因此我们还需要弄一个执行rasa shell命令的容器。
-···shell
+```shell
 docker run -it --name=rasa_shell --user 1000 -v $PWD:/app rasa/rasa shell
 ```
+无错误运行下，应该会直接进入rasa的对话入口。输入/stop退出rasa shell，容器也会退出。
+那么再次运行就不再是docker run了，而是docker start -i rasa_shell
