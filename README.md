@@ -194,6 +194,13 @@ rasa run -m --enable-api --cors "*"  @REM 在后台运行，可在本地网页�
 ```
 
 ### 二，使用docker部署rasa项目
+1. 拉取rasa镜像
 ```shell
 docker pull philoboy/rasa_zh_md
 ```
+
+2. clone rasa项目训练数据
+```shell
+git clone https://github.com/BugLeesir/rasa_project_for_windows.git
+```
+3.
