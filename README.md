@@ -199,13 +199,13 @@ rasa run -m --enable-api --cors "*"  @REM 在后台运行，可在本地网页�
 
 ### 二，使用docker部署rasa项目
 
-1. 拉取rasa镜像
+1, 拉取rasa镜像
 
 ```shell
 docker pull philoboy/rasa_zh_md
 ```
 
-1. 初始化
+2,初始化
 
 先初始化，但如果不设定用户的话会出现权限问题。
 按官方的解释为了避免容器使用root权限，因此容器默认被uid为1001的用户拥有，因此如果linux用户的uid不是1001就会碰到权限问题
@@ -215,7 +215,7 @@ docker pull philoboy/rasa_zh_md
 docker run --name=rasa_init --user 1000(这里输入自己用的用户的uid) -v $PWD:/app philoboy/rasa_zh_md:1.0 init --no-prompt
 ```
 
-3.部署rasa shell与rasa机器人对话
+3,部署rasa shell与rasa机器人对话
 
 因为init容器不会一直运行，因此我们还需要弄一个执行rasa shell命令的容器。
 
@@ -225,3 +225,35 @@ docker run -it --name=rasa_shell --user 1000 -v $PWD:/app rasa/rasa shell
 
 无错误运行下，应该会直接进入rasa的对话入口。输入/stop退出rasa shell，容器也会退出。
 那么再次运行就不再是docker run了，而是docker start -i rasa_shell
+如果之前使用的是docker run -id而不是-it或者docker start rasa_shell没有-i标签那么rasa服务就会在后台持续运行，那么此时应该
+
+```shell
+rasa attach rasa_shell
+```
+
+4,训练新模型
+
+修改训练数据和相关配置后
+
+```shell
+docker run --name=rasa_train -v $(pwd):/app philoboy/rasa_zh_md:1.0 train --domain domain.yml --data data --out models
+```
+
+容器创建好之后下次训练模型只需要docker start rasa_train就可以了。
+
+新模型会放入models文件夹，启动rasa_shell会自动加载最新模型。
+
+5,开放api端口
+
+首先要在credentials.yml中rest:后面加上
+url: "http:localhost:5005/webhooks/rest/webhook"
+之后就是通过这个url与rasa交互
+然后创建新容器
+
+```shell
+docker run --name=rasa_run -p 5005:5005 -v $PWD:/app philoboy/rasa_zh_md:1.0 run --enable-api --cors "*"
+```
+
+端口直接映射为5005。
+这之后会在rasa server is up and running停住不出去，这个时候直接ctrl + c手动终止
+然后docker start rasa_run就可以后台运行。
