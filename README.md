@@ -214,3 +214,16 @@ docker run -it --name=rasa_shell --user 1000 -v $PWD:/app rasa/rasa shell
 ```
 无错误运行下，应该会直接进入rasa的对话入口。输入/stop退出rasa shell，容器也会退出。
 那么再次运行就不再是docker run了，而是docker start -i rasa_shell
+如果之前使用的是docker run -id而不是-it或者docker start rasa_shell没有-i标签那么rasa服务就会在后台持续运行，那么此时应该
+```shell
+rasa attach rasa_shell
+```
+4.训练新模型
+修改训练数据和相关配置后
+```shell
+docker run --name=rasa_train -v $(pwd):/app philoboy/rasa_zh_md:1.0 train --domain domain.yml --data data --out models
+```
+容器创建好之后下次训练模型只需要docker start rasa_train就可以了。
+新模型会放入models文件夹，启动rasa_shell会自动加载最新模型。
+
+
