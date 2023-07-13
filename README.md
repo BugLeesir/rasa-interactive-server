@@ -190,6 +190,10 @@ rasa shell  @REM 在命令行中运行项目
 ```
 
 ```shell
+rasa run actions  @REM 在后台运行actions
+```
+
+```shell
 rasa run -m --enable-api --cors "*"  @REM 在后台运行，可在本地网页进行交互
 ```
 
