@@ -194,7 +194,7 @@ rasa run actions  @REM 在后台运行actions
 ```
 
 ```shell
-rasa run -m --enable-api --cors "*"  @REM 在后台运行，可在本地网页进行交互
+rasa run --enable-api --cors "*"  @REM 在后台运行，可在本地网页进行交互
 ```
 
 ### 二，使用docker部署rasa项目
