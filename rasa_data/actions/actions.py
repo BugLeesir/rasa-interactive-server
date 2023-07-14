@@ -58,6 +58,7 @@ from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.types import DomainDict
 from rasa_sdk.events import SlotSet
 
+
 class WeatherAPIAction(Action):
     def name(self) -> Text:
         return "action_weather_api"
@@ -76,6 +77,7 @@ class WeatherAPIAction(Action):
         #     dispatcher.utter_message(template="utter_weather_info", weather_description=weather, temperature=temperature, wind_speed=wind_speed)
         # else:
         #     dispatcher.utter_message(template="utter_weather_error")
+        location=tracker.get_slot("location")
         dispatcher.utter_message(f"你来自{location},现在程序正在开发中，请勿着急")
         return []
     
@@ -86,7 +88,7 @@ class ActionFillLocation(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         # 获取用户位置
-        global location
+
         location=tracker.latest_message.get('text') # 将用户回答的位置作为location
         # 将槽填充
         return [SlotSet('location',location)]
