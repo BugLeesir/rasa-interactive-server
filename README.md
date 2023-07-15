@@ -220,7 +220,7 @@ docker run --name=rasa_init --user 1000(这里输入自己用的用户的uid) -v
 因为init容器不会一直运行，因此我们还需要弄一个执行rasa shell命令的容器。
 
 ```shell
-docker run -it --name=rasa_shell --user 1000 -v $PWD:/app rasa/rasa shell
+docker run -it --name=rasa_shell --user 1000 -v $PWD:/app philoboy/rasa_zh_md shell
 ```
 
 无错误运行下，应该会直接进入rasa的对话入口。输入/stop退出rasa shell，容器也会退出。
