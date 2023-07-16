@@ -23,9 +23,4 @@ rules:
   - action: utter_flood_level_info
   - action: utter_ask_more_info
 
-# - rule: handle unknown message
-#   steps:
-#   - intent: nlu_fallback
-#   - action: utter_default
-
 

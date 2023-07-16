@@ -13,11 +13,12 @@ intents:
   - affirm
   - deny
   - weather_inform
-  - ask_for_location
+  - ask_weather_with_location
+  - respond_by_single_place
 
 actions:
   - action_weather_api
-  - action_fill_location
+  - action_fill_location_by_latest_massage
 
 
 responses:
