@@ -186,15 +186,15 @@ python -m spacy download zh_core_web_trf
 4，运行rasa项目
 
 ```shell
-rasa shell  @REM 在命令行中运行项目
+rasa shell  // 在命令行中运行项目
 ```
 
 ```shell
-rasa run actions  @REM 在后台运行actions
+rasa run actions  // 在后台运行actions
 ```
 
 ```shell
-rasa run --enable-api --cors "*"  @REM 在后台运行，可在本地网页进行交互
+rasa run --enable-api --cors "*"  // 在后台运行，可在本地网页进行交互
 ```
 
 ### 二，使用docker部署rasa项目
