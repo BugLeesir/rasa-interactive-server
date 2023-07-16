@@ -76,8 +76,18 @@ nlu:
     - 今天天气如何
     - 我在南昌
 
-- intent: ask_for_location
+- intent: ask_weather_with_location
   examples: |
     - 在[北京](location)天气怎么样？
     - [上海](location)现在的温度是多少？
     - 我想知道[广州](location)的风速。
+    - 现在[新余](location)天气怎样？
+    - [南昌](location)天气怎样？
+
+- intent: respond_by_single_place
+  examples: |
+   - 北京
+   - 新余
+   - 上海
+   - 武汉
+   - 江西
