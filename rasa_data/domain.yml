@@ -3,8 +3,6 @@ version: "3.1"
 intents:
   - greet
   - inform
-  - ask_flood_prevention
-  - ask_flood_level
   - thanks
   - goodbye
   - nlu_fallback  
@@ -15,19 +13,17 @@ intents:
   - weather_inform
   - ask_weather_with_location
   - respond_by_single_place
+  - search_hydrometric_station_by_name
 
 actions:
   - action_weather_api
   - action_fill_location_by_latest_massage
+  - action_search_hydrometric_station_by_name
 
 
 responses:
   utter_greet:
     - text: "你好！有什么我可以帮你的吗？"
-  utter_flood_prevention_info:
-    - text: "请在以下网站获取洪水防御信息：https://www.flood.gov/"
-  utter_flood_level_info:
-    - text: "请查询以下网站获取最新洪水水位信息：https://www.wateroffice.ec.gc.ca/"
   utter_ask_more_info:
     - text: "还有其他问题吗？"
   utter_thanks:
@@ -44,19 +40,23 @@ responses:
     - text: "请告诉我您的位置信息。"
   utter_weather_error:
     - text: "对不起，无法获取该地区的天气信息。"
-  # utter_weather_info:
-  #   - text: "当前天气：{weather_description}，温度：{temperature}度，风速：{wind_speed}公里/小时。"
+
 
 entities:
   - location
-
+  - stationName
+  
 slots:
   location:
     type: text
     mappings:
     - type: from_entity
       entity: location
-      # intent: weather_inform
+  stationName:
+    type: text
+    mappings:
+    - type: from_entity
+      entity: stationName
 
 session_config:
   session_expiration_time: 60

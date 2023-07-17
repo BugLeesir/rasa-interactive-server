@@ -6,21 +6,6 @@ stories:
   steps:
   - intent: greet
   - action: utter_greet
-  - intent: inform
-  - action: utter_flood_prevention_info
-  - action: utter_ask_more_info
-
-- story: ask for flood prevention information
-  steps:
-  - intent: ask_flood_prevention
-  - action: utter_flood_prevention_info
-  - action: utter_ask_more_info
-
-- story: ask for flood level
-  steps:
-  - intent: ask_flood_level
-  - action: utter_flood_level_info
-  - action: utter_ask_more_info
 
 - story: thanks and goodbye
   steps:
@@ -47,3 +32,8 @@ stories:
   - intent: respond_by_single_place
   - action: action_fill_location_by_latest_massage
   - action: action_weather_api
+
+- story: search station by name
+  steps:
+  - intent: search_hydrometric_station_by_name
+  - action: action_search_hydrometric_station_by_name

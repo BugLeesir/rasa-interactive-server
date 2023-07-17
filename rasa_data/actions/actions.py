@@ -52,6 +52,7 @@
 #         return []
 
 import requests
+import pymysql
 from typing import Any, Text, Dict, List
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
@@ -59,25 +60,11 @@ from rasa_sdk.types import DomainDict
 from rasa_sdk.events import SlotSet
 
 
-
 class WeatherAPIAction(Action):
     def name(self) -> Text:
         return "action_weather_api"
 
     def run(self, dispatcher: CollectingDispatcher,tracker: Tracker,domain: DomainDict) -> List[Dict[Text, Any]]:
-        # api_key = "7a2f481009dc95e40c26d42351201246"
-        # location = tracker.latest_message['text']
-        # base_url = "http://api.openweathermap.org/data/2.5/weather?"
-        # complete_url = base_url + "appid=" + api_key + "&q=" + location
-        # response = requests.get(complete_url)
-        # data = response.json()
-        # if data["cod"] != "404":
-        #     weather = data["weather"][0]["description"]
-        #     temperature = round(float(data["main"]["temp"]) - 273.15, 2)
-        #     wind_speed = data["wind"]["speed"]
-        #     dispatcher.utter_message(template="utter_weather_info", weather_description=weather, temperature=temperature, wind_speed=wind_speed)
-        # else:
-        #     dispatcher.utter_message(template="utter_weather_error")
         location=tracker.get_slot("location")
         dispatcher.utter_message(f"你来自{location},现在程序正在开发中，请勿着急")
         return []
@@ -93,5 +80,30 @@ class ActionFillLocationByLatestMassage(Action):
         location=tracker.latest_message.get('text') # 将用户回答的位置作为location
         # 将槽填充
         return [SlotSet('location',location)]
-    
 
+
+class ActionSearchHydrometricStationByName(Action):
+    def name(self) -> Text:
+        return "action_search_hydrometric_station_by_name"
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        
+        stationName=tracker.get_slot("stationName")
+
+        # dispatcher.utter_message(f"名字是{stationName}")
+
+        # 连接数据库
+        conn = pymysql.connect(host='43.142.246.112', port=3306, user='common', password='common666', db='hydrology', charset='utf8')
+        cur = conn.cursor(pymysql.cursors.DictCursor) # 生成游标对象
+        sql=f"select * from hydrometric_station where name='{stationName}'"
+        cur.execute(sql)
+        data=cur.fetchall()
+        cur.close()
+        conn.close()
+        if data :
+            data_item = data[0]  # 获取列表中的第一个字典
+            dispatcher.utter_message(f"已查询到河道站\n 河道站编号：{data_item['station_id']} 河道站名称：{data_item['name']} 河流名称：{data_item['river_name']} 水系名称：{data_item['hydrographic_net_name']} 建站名称：{data_item['esDate']} 站点位置:{data_item['location']}")
+        else :
+            dispatcher.utter_message("未查询到河道站,抱歉")    
+        return[]

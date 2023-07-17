@@ -11,16 +11,5 @@ rules:
   steps:
   - intent: bot_challenge
   - action: utter_iamabot
-- rule: provide flood prevention information
-  steps:
-  - intent: ask_flood_prevention
-  - action: utter_flood_prevention_info
-  - action: utter_ask_more_info
-
-- rule: provide flood level information
-  steps:
-  - intent: ask_flood_level
-  - action: utter_flood_level_info
-  - action: utter_ask_more_info
 
 

@@ -12,18 +12,6 @@ nlu:
     - 下午好
     - 晚上好
 
-- intent: ask_flood_prevention
-  examples: |
-    - 请问这个地区有哪些防洪设施？
-    - 那些区域比较容易发生洪灾？
-    - 怎么预防洪灾？
-
-- intent: ask_flood_level
-  examples: |
-    - 目前的洪水水位是多少？
-    - 预测接下来的降雨量会造成多大的洪水？
-    - 目前预警等级是什么？
-
 - intent: thanks
   examples: |
     - 谢谢
@@ -91,3 +79,12 @@ nlu:
    - 上海
    - 武汉
    - 江西
+
+- intent: search_hydrometric_station_by_name
+  examples: |
+   - 我想查询名字为[大赉](stationName)的河道站。
+   - 有没有名字为[黑龙江](stationName)的河道站的信息。
+   - 名字为[松花江](stationName)的河道站的信息。
+   - 河道站名字[黄河](stationName)。
+   - 河道站名字为[长江](stationName)。
+   - [长江](stationName)河道站。
