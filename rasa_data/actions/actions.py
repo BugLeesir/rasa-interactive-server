@@ -106,4 +106,7 @@ class ActionSearchHydrometricStationByName(Action):
             dispatcher.utter_message(f"已查询到河道站\n 河道站编号：{data_item['station_id']} 河道站名称：{data_item['name']} 河流名称：{data_item['river_name']} 水系名称：{data_item['hydrographic_net_name']} 建站名称：{data_item['esDate']} 站点位置:{data_item['location']}")
         else :
             dispatcher.utter_message("未查询到河道站,抱歉")    
-        return[]
+        
+        resetSlot="false"
+
+        return[SlotSet('stationName', resetSlot)]
