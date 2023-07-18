@@ -24,23 +24,23 @@ nlu:
     - 拜拜
     - 下次再聊
 
-- intent: affirm
-  examples: |
-    - 是的
-    - 对的
-    - 没错
+# - intent: affirm
+#   examples: |
+#     - 是的
+#     - 对的
+#     - 没错
 
-- intent: deny
-  examples: |
-    - 不是的
-    - 不对
-    - 错了
+# - intent: deny
+#   examples: |
+#     - 不是的
+#     - 不对
+#     - 错了
 
-- intent: inform
-  examples: |
-    - 我想知道关于防洪减灾的信息
-    - 请告诉我关于防洪减灾的事情
-    - 我想了解防洪减灾相关的信息
+# - intent: inform
+#   examples: |
+#     - 我想知道关于防洪减灾的信息
+#     - 请告诉我关于防洪减灾的事情
+#     - 我想了解防洪减灾相关的信息
 
 - intent: bot_challenge
   examples: |
@@ -79,6 +79,31 @@ nlu:
    - 上海
    - 武汉
    - 江西
+   - 南昌
+   - 广州
+   - 天津
+   - 重庆
+   - 香港
+   - 台湾
+   - 大赉
+   - 测试河道
+
+- intent: respond_by_float_number
+  examples: |
+   - [1.2](waveSpeedcoef)
+   - [1.3](waveSpeedcoef)
+   - [1.4](waveSpeedcoef)
+   - [1.5](waveSpeedcoef)
+   - 1.6
+   - 0.8
+   - 0.9
+   - 1.0
+   - 1.1
+   - 0.3
+   - 0.4
+   - 0.5
+   - [0.6](waveSpeedcoef)
+
 
 - intent: search_hydrometric_station_by_name
   examples: |
@@ -88,3 +113,19 @@ nlu:
    - 河道站名字[黄河](stationName)。
    - 河道站名字为[长江](stationName)。
    - [长江](stationName)河道站。
+
+- intent: calculate_the_flood_transmission_time
+  examples: |
+   - 我想计算洪水传播时间
+   - 我想知到洪水传播时间
+   - 洪水传播时间
+   - 计算洪水传播时间
+   - 请计算洪水传播时间
+
+- intent: calculate_the_flood_transmission_time_with_locations
+  examples: |
+   - 我想计算[大赉](upStation)到[测试河道](downStation)的洪水传播时间
+   - 我想知到[大赉](upStation)到[测试河道](downStation)的洪水传播时间
+   - [大赉](upStation)到[测试河道](downStation)的洪水传播时间
+   - 计算[大赉](upStation)到[测试河道](downStation)的洪水传播时间
+   - 请计算[大赉](upStation)到[测试河道](downStation)的洪水传播时间

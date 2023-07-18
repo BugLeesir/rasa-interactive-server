@@ -2,36 +2,36 @@ version: "3.1"
 
 intents:
   - greet
-  - inform
   - thanks
   - goodbye
   - nlu_fallback  
   - bot_challenge
   - sad
-  - affirm
-  - deny
   - weather_inform
   - ask_weather_with_location
   - respond_by_single_place
+  - respond_by_float_number
   - search_hydrometric_station_by_name
+  - calculate_the_flood_transmission_time
+  - calculate_the_flood_transmission_time_with_locations
 
 actions:
   - action_weather_api
   - action_fill_location_by_latest_massage
   - action_search_hydrometric_station_by_name
+  - action_fill_waveSpeedcoef_by_latest_massage
+  - action_fill_up_station_by_latest_massage
+  - action_fill_down_station_by_latest_massage
+  - action_calculate_the_flood_transmission_time
 
 
 responses:
   utter_greet:
     - text: "你好！有什么我可以帮你的吗？"
-  utter_ask_more_info:
-    - text: "还有其他问题吗？"
   utter_thanks:
     - text: "不客气，祝您平安！"
   utter_goodbye:
     - text: "再见！"
-  utter_default:
-    - text: "抱歉，我不明白你的意思，请换个方式表达。" 
   utter_iamabot:
     - text: "I am a bot, powered by Rasa."
   utter_sad:
@@ -40,11 +40,20 @@ responses:
     - text: "请告诉我您的位置信息。"
   utter_weather_error:
     - text: "对不起，无法获取该地区的天气信息。"
+  utter_ask_upStation:
+    - text: "请告诉我上游河道站的名称。"
+  utter_ask_downStation:
+    - text: "请告诉我下游河道站的名称。"
+  utter_ask_waveSpeedcoef:
+    - text: "请告诉我波速系数。"
 
 
 entities:
   - location
   - stationName
+  - upStation
+  - downStation
+  - waveSpeedcoef
   
 slots:
   location:
@@ -57,6 +66,21 @@ slots:
     mappings:
     - type: from_entity
       entity: stationName
+  upStation:
+    type: text
+    mappings:
+    - type: from_entity
+      entity: upStation
+  downStation:
+    type: text
+    mappings:
+    - type: from_entity
+      entity: downStation
+  waveSpeedcoef:
+    type: text
+    mappings:
+    - type: from_entity
+      entity: waveSpeedcoef
 
 session_config:
   session_expiration_time: 60
