@@ -14,6 +14,7 @@ intents:
   - search_hydrometric_station_by_name
   - calculate_the_flood_transmission_time
   - calculate_the_flood_transmission_time_with_locations
+  - search_precipitation_by_name
 
 actions:
   - action_weather_api
@@ -23,7 +24,7 @@ actions:
   - action_fill_up_station_by_latest_massage
   - action_fill_down_station_by_latest_massage
   - action_calculate_the_flood_transmission_time
-
+  - action_search_precipitation_by_name
 
 responses:
   utter_greet:

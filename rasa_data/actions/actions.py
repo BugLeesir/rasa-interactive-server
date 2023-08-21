@@ -215,3 +215,40 @@ class CalculateTheFloodTransmissionTime(Action):
         dispatcher.utter_message(f"洪水传播时间：{t}s")
 
         return []
+    
+class ActionSearchPrecipitationByName(Action):
+    def name(self) -> Text:
+        return "action_search_precipitation_by_name"
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        
+        location=tracker.get_slot("location")
+
+  
+        # 连接数据库
+        conn = pymysql.connect(host='43.142.246.112', port=3306, user='common', password='common666', db='hydrology', charset='utf8')
+        cur = conn.cursor(pymysql.cursors.DictCursor) # 生成游标对象
+        sql=f"select * from hydrometric_station where name='{location}'"
+        cur.execute(sql)
+        data=cur.fetchall()
+
+        if data :
+            data_item = data[0]  # 获取列表中的第一个字典
+            station_id=data_item['station_id']
+            sql=f"select * from waterlevel where station_id='{station_id}"  
+            cur.execute(sql)
+            data=cur.fetchall()
+            if data :
+                data_item = data[0]
+                dispatcher.utter_message(f"{location}的降水量是 {data_item['precipitation'] } mm")
+            else :
+                dispatcher.utter_message("未查询到该地的降水量，抱歉")
+        else :
+            dispatcher.utter_message("未查询到该地的降水量，抱歉")    
+        
+        cur.close()
+        conn.close()
+        resetSlot="false" # 将槽重置
+
+        return[SlotSet('location', resetSlot)]
