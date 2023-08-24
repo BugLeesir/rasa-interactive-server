@@ -63,5 +63,4 @@ stories:
 - story: search search precipitation by name
   steps:
   - intent: search_precipitation_by_name
-  - action: action_fill_location_by_latest_massage
   - action: action_search_precipitation_by_name

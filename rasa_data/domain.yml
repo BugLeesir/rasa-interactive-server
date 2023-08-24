@@ -55,6 +55,7 @@ entities:
   - upStation
   - downStation
   - waveSpeedcoef
+  - place
   
 slots:
   location:
@@ -82,6 +83,11 @@ slots:
     mappings:
     - type: from_entity
       entity: waveSpeedcoef
+  place:
+    type: text
+    mappings:
+    - type: from_entity
+      entity: place
 
 session_config:
   session_expiration_time: 60

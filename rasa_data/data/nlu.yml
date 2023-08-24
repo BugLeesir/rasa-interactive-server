@@ -132,6 +132,11 @@ nlu:
 
 - intent: search_precipitation_by_name
   examples: |
-   - 我想知道[大赉](location)的降水量
-   - [黑龙江](location)的降水量是多少
-   - [大赉](location)的降水量
+   - 我想知道[大赉](place)的降水量
+   - [大赉](place)的降水量
+   - [大赉](place)的降水量是多少
+   - 请告诉我[大赉](place)的降水量
+   - 我想知道[测试河道](place)的降水量
+   - [测试河道](place)的降水量
+   - [测试河道](place)的降水量是多少
+   - 请告诉我[测试河道](place)的降水量
