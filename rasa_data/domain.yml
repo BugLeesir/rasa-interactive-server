@@ -15,6 +15,7 @@ intents:
   - calculate_the_flood_transmission_time
   - calculate_the_flood_transmission_time_with_locations
   - search_precipitation_by_name
+  - search_precipitation
 
 actions:
   - action_weather_api
@@ -25,6 +26,7 @@ actions:
   - action_fill_down_station_by_latest_massage
   - action_calculate_the_flood_transmission_time
   - action_search_precipitation_by_name
+  - action_fill_place_by_latest_massage
 
 responses:
   utter_greet:
@@ -47,6 +49,8 @@ responses:
     - text: "请告诉我下游河道站的名称。"
   utter_ask_waveSpeedcoef:
     - text: "请告诉我波速系数。"
+  utter_ask_place:
+    - text: "请告诉我你要查询的地点"
 
 
 entities:

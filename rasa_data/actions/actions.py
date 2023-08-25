@@ -254,3 +254,17 @@ class ActionSearchPrecipitationByName(Action):
         resetSlot="false" # 将槽重置
 
         return[SlotSet('place', resetSlot)]
+
+
+class ActionFillPlaceByLatestMassage(Action):
+    def name(self) -> Text:
+        return "action_fill_place_by_latest_massage"
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        
+         
+        place=tracker.latest_message.get('text') # 将用户回答作为用户的位置
+
+        # 将槽填充
+        return [SlotSet('place',place)]

@@ -60,7 +60,15 @@ stories:
   - action: action_fill_waveSpeedcoef_by_latest_massage
   - action: action_calculate_the_flood_transmission_time
 
-- story: search search precipitation by name
+- story: search precipitation by name
   steps:
   - intent: search_precipitation_by_name
+  - action: action_search_precipitation_by_name
+
+- story: search precipitation 
+  steps:
+  - intent: search_precipitation
+  - action: utter_ask_place
+  - intent: respond_by_single_place
+  - action: action_fill_place_by_latest_massage
   - action: action_search_precipitation_by_name
