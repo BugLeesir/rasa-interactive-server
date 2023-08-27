@@ -103,7 +103,13 @@ class ActionSearchHydrometricStationByName(Action):
         conn.close()
         if data :
             data_item = data[0]  # 获取列表中的第一个字典
-            dispatcher.utter_message(f"已查询到河道站\n 河道站编号：{data_item['station_id']} 河道站名称：{data_item['name']} 河流名称：{data_item['river_name']} 水系名称：{data_item['hydrographic_net_name']} 建站名称：{data_item['esDate']} 站点位置:{data_item['location']}")
+            dispatcher.utter_message(f"已查询到河道站")
+            dispatcher.utter_message(f"河道站编号：{data_item['station_id']}")
+            dispatcher.utter_message(f"河道站名称：{data_item['name']}")
+            dispatcher.utter_message(f"河流名称：{data_item['river_name']}")
+            dispatcher.utter_message(f"水系名称：{data_item['hydrographic_net_name']}")
+            dispatcher.utter_message(f"建站名称：{data_item['esDate']}")
+            dispatcher.utter_message(f"站点位置: {data_item['location']}")
         else :
             dispatcher.utter_message("未查询到河道站,抱歉")    
         

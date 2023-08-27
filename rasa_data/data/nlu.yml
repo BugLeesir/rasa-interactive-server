@@ -113,6 +113,7 @@ nlu:
    - 河道站名字[黄河](stationName)。
    - 河道站名字为[长江](stationName)。
    - [长江](stationName)河道站。
+   - [大赉](stationName)河道站
 
 - intent: calculate_the_flood_transmission_time
   examples: |
