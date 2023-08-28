@@ -116,7 +116,20 @@ class ActionSearchHydrometricStationByName(Action):
         resetSlot="false"
 
         return[SlotSet('stationName', resetSlot)]
+
+class ActionFillHydrometricStationByLatestMassege(Action):
+    def name(self) -> Text:
+        return "action_fill_hydrometric_station_by_latest_massege"
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
     
+        stationName=tracker.latest_message.get('text') 
+
+        # 将槽填充
+        return [SlotSet('stationName',stationName)]
+
+
 class ActionFillWaveSpeedCoefByLatestMassaege(Action):
     def name(self) -> Text:
         return "action_fill_waveSpeedcoef_by_latest_massage"

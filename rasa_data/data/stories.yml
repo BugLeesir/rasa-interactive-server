@@ -38,6 +38,14 @@ stories:
   - intent: search_hydrometric_station_by_name
   - action: action_search_hydrometric_station_by_name
 
+- story: search station
+  steps:
+  - intent: search_hydrometric_station
+  - action: utter_ask_station
+  - intent: respond_by_single_place
+  - action: action_fill_hydrometric_station_by_latest_massege
+  - action: action_search_hydrometric_station_by_name
+
 - story: calculate the flood transmission time
   steps:
   - intent: calculate_the_flood_transmission_time

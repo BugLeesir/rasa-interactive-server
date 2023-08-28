@@ -115,6 +115,13 @@ nlu:
    - [长江](stationName)河道站。
    - [大赉](stationName)河道站
 
+- intent: search_hydrometric_station
+  examples: |
+   - 我想查询河道站的信息
+   - 河道站查询
+   - 查询河道站
+   - 河道站信息
+
 - intent: calculate_the_flood_transmission_time
   examples: |
    - 我想计算洪水传播时间
