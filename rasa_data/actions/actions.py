@@ -231,7 +231,9 @@ class CalculateTheFloodTransmissionTime(Action):
 
         t=L/u                                  # 计算洪水传播时间
 
-        dispatcher.utter_message(f"洪水传播时间：{t}s")
+        format_time=round(t,2)                 # 保留两位小数
+
+        dispatcher.utter_message(f"洪水传播时间：{format_time}s")
 
         return []
     
