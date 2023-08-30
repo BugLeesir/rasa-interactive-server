@@ -58,6 +58,9 @@ from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.types import DomainDict
 from rasa_sdk.events import SlotSet
+from py2neo import Graph
+import pandas as pd
+import json
 
 
 class WeatherAPIAction(Action):
@@ -289,3 +292,15 @@ class ActionFillPlaceByLatestMassage(Action):
 
         # 将槽填充
         return [SlotSet('place',place)]
+    
+class ActionGetKnowledgeGraph(Action):
+    def name(self) -> Text:
+        return "action_get_knowledge_graph"
+    def run(self, dispatcher,tracker,domain):
+        graph = Graph('bolt://43.142.246.112:7687',auth=('neo4j','common666'))
+        cypher1 = "match (n:riverstation) return n.name as node"
+        cypher2 = "match (n:riverstation)-[r]->(m:riverstation) return STARTNODE(r) as source,ENDNODE(r) as target,r.time as time"
+        node_df = graph.run(cypher1).to_data_frame()
+        edge_df = graph.run(cypher2).to_data_frame()
+        dispatcher.utter_message(text="test")
+        return []
