@@ -86,7 +86,7 @@ nlu:
    - 香港
    - 台湾
    - 大赉
-   - 测试河道
+   - 长江
 
 - intent: respond_by_float_number
   examples: |
@@ -113,6 +113,14 @@ nlu:
    - 河道站名字[黄河](stationName)。
    - 河道站名字为[长江](stationName)。
    - [长江](stationName)河道站。
+   - [大赉](stationName)河道站
+
+- intent: search_hydrometric_station
+  examples: |
+   - 我想查询河道站的信息
+   - 河道站查询
+   - 查询河道站
+   - 河道站信息
 
 - intent: calculate_the_flood_transmission_time
   examples: |
@@ -124,11 +132,11 @@ nlu:
 
 - intent: calculate_the_flood_transmission_time_with_locations
   examples: |
-   - 我想计算[大赉](upStation)到[测试河道](downStation)的洪水传播时间
-   - 我想知到[大赉](upStation)到[测试河道](downStation)的洪水传播时间
-   - [大赉](upStation)到[测试河道](downStation)的洪水传播时间
-   - 计算[大赉](upStation)到[测试河道](downStation)的洪水传播时间
-   - 请计算[大赉](upStation)到[测试河道](downStation)的洪水传播时间
+   - 我想计算[大赉](upStation)到[长江](downStation)的洪水传播时间
+   - 我想知到[大赉](upStation)到[长江](downStation)的洪水传播时间
+   - [大赉](upStation)到[长江](downStation)的洪水传播时间
+   - 计算[大赉](upStation)到[长江](downStation)的洪水传播时间
+   - 请计算[大赉](upStation)到[长江](downStation)的洪水传播时间
 
 - intent: search_precipitation_by_name
   examples: |
@@ -136,10 +144,10 @@ nlu:
    - [大赉](place)的降水量
    - [大赉](place)的降水量是多少
    - 请告诉我[大赉](place)的降水量
-   - 我想知道[测试河道](place)的降水量
-   - [测试河道](place)的降水量
-   - [测试河道](place)的降水量是多少
-   - 请告诉我[测试河道](place)的降水量
+   - 我想知道[长江](place)的降水量
+   - [长江](place)的降水量
+   - [长江](place)的降水量是多少
+   - 请告诉我[长江](place)的降水量
 
 - intent: search_precipitation
   examples: |

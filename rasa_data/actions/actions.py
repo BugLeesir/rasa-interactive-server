@@ -103,14 +103,33 @@ class ActionSearchHydrometricStationByName(Action):
         conn.close()
         if data :
             data_item = data[0]  # 获取列表中的第一个字典
-            dispatcher.utter_message(f"已查询到河道站\n 河道站编号：{data_item['station_id']} 河道站名称：{data_item['name']} 河流名称：{data_item['river_name']} 水系名称：{data_item['hydrographic_net_name']} 建站名称：{data_item['esDate']} 站点位置:{data_item['location']}")
+            dispatcher.utter_message(f"已查询到河道站")
+            dispatcher.utter_message(f"河道站编号：{data_item['station_id']}")
+            dispatcher.utter_message(f"河道站名称：{data_item['name']}")
+            dispatcher.utter_message(f"河流名称：{data_item['river_name']}")
+            dispatcher.utter_message(f"水系名称：{data_item['hydrographic_net_name']}")
+            dispatcher.utter_message(f"建站名称：{data_item['esDate']}")
+            dispatcher.utter_message(f"站点位置: {data_item['location']}")
         else :
             dispatcher.utter_message("未查询到河道站,抱歉")    
         
         resetSlot="false"
 
         return[SlotSet('stationName', resetSlot)]
+
+class ActionFillHydrometricStationByLatestMassege(Action):
+    def name(self) -> Text:
+        return "action_fill_hydrometric_station_by_latest_massege"
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
     
+        stationName=tracker.latest_message.get('text') 
+
+        # 将槽填充
+        return [SlotSet('stationName',stationName)]
+
+
 class ActionFillWaveSpeedCoefByLatestMassaege(Action):
     def name(self) -> Text:
         return "action_fill_waveSpeedcoef_by_latest_massage"
@@ -212,7 +231,9 @@ class CalculateTheFloodTransmissionTime(Action):
 
         t=L/u                                  # 计算洪水传播时间
 
-        dispatcher.utter_message(f"洪水传播时间：{t}s")
+        format_time=round(t,2)                 # 保留两位小数
+
+        dispatcher.utter_message(f"洪水传播时间：{format_time}s")
 
         return []
     
