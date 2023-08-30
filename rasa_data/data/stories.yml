@@ -6,21 +6,6 @@ stories:
   steps:
   - intent: greet
   - action: utter_greet
-  - intent: inform
-  - action: utter_flood_prevention_info
-  - action: utter_ask_more_info
-
-- story: ask for flood prevention information
-  steps:
-  - intent: ask_flood_prevention
-  - action: utter_flood_prevention_info
-  - action: utter_ask_more_info
-
-- story: ask for flood level
-  steps:
-  - intent: ask_flood_level
-  - action: utter_flood_level_info
-  - action: utter_ask_more_info
 
 - story: thanks and goodbye
   steps:
@@ -35,17 +20,62 @@ stories:
     - intent: sad
     - action: utter_sad
 
-- story: fill location
+- story: query weather with location
   steps:
-    - intent: ask_for_location
-    - action: action_fill_location
+    - intent: ask_weather_with_location
+    - action: action_weather_api
 
-- story: handle_weather_query
+- story: handle weather query
   steps:
   - intent: weather_inform
   - action: utter_ask_location
-  - intent: ask_for_location
-  - action: action_fill_location
+  - intent: respond_by_single_place
+  - action: action_fill_location_by_latest_massage
   - action: action_weather_api
-  # - action: utter_weather_info
-  # - active_loop: null
+
+- story: search station by name
+  steps:
+  - intent: search_hydrometric_station_by_name
+  - action: action_search_hydrometric_station_by_name
+
+- story: calculate the flood transmission time
+  steps:
+  - intent: calculate_the_flood_transmission_time
+  - action: utter_ask_upStation
+  - intent: respond_by_single_place
+  - action: action_fill_up_station_by_latest_massage
+  - action: utter_ask_downStation
+  - intent: respond_by_single_place
+  - action: action_fill_down_station_by_latest_massage
+  - action: utter_ask_waveSpeedcoef
+  - intent: respond_by_float_number
+  - action: action_fill_waveSpeedcoef_by_latest_massage
+  - action: action_calculate_the_flood_transmission_time
+
+- story: calculate the flood transmission time with locations
+  steps:
+  - intent: calculate_the_flood_transmission_time_with_locations
+  - action: utter_ask_waveSpeedcoef
+  - intent: respond_by_float_number
+  - action: action_fill_waveSpeedcoef_by_latest_massage
+  - action: action_calculate_the_flood_transmission_time
+
+- story: search precipitation by name
+  steps:
+  - intent: search_precipitation_by_name
+  - action: action_search_precipitation_by_name
+
+- story: search precipitation 
+  steps:
+  - intent: search_precipitation
+  - action: utter_ask_place
+  - intent: respond_by_single_place
+  - action: action_fill_place_by_latest_massage
+  - action: action_search_precipitation_by_name
+
+- story: inquire knowledge graph
+  steps:
+  - intent: inquire_knowledge_graph
+  - action: action_get_knowledge_graph
+  - intent: thanks
+  - action: utter_thanks
