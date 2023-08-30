@@ -246,7 +246,7 @@ class ActionSearchPrecipitationByName(Action):
         
         place=tracker.get_slot("place")
 
-        # dispatcher.utter_message(f"{place}")
+        dispatcher.utter_message(f"{place}")
   
         # 连接数据库
         conn = pymysql.connect(host='43.142.246.112', port=3306, user='common', password='common666', db='hydrology', charset='utf8')
