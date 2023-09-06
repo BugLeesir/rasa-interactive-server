@@ -1,5 +1,7 @@
 from flask import Flask, jsonify
 import pandas as pd
+from knowledge_graph import graph_data
+
 
 app = Flask(__name__)
 
@@ -13,6 +15,12 @@ data = pd.DataFrame({
 @app.route("/get_water_flow_data")
 def get_water_level_data():
     return jsonify(data.to_dict(orient="records"))
+
+
+@app.route("/get_graph_data", methods=["POST"])
+def get_graph_data():
+    graph_data_dict = graph_data()
+    return jsonify(graph_data_dict)
 
 
 if __name__ == "__main__":
