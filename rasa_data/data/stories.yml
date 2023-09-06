@@ -80,3 +80,10 @@ stories:
   - intent: respond_by_single_place
   - action: action_fill_place_by_latest_massage
   - action: action_search_precipitation_by_name
+
+- story: inquire knowledge graph
+  steps:
+  - intent: inquire_knowledge_graph
+  - action: action_get_knowledge_graph
+  - intent: thanks
+  - action: utter_thanks

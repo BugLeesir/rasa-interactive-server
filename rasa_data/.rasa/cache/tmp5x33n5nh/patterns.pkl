@@ -1,0 +1,10 @@
+[
+  {
+    "name": "place",
+    "pattern": "大赉|长江|黄河"
+  },
+  {
+    "name": "stationName",
+    "pattern": "(\\b大赉\\b|\\b长江\\b)"
+  }
+]

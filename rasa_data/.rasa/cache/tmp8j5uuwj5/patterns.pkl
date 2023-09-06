@@ -1,0 +1,6 @@
+[
+  {
+    "name": "stationName",
+    "pattern": "(\\b大赉\\b|\\b长江\\b)"
+  }
+]
