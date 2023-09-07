@@ -1,4 +1,3 @@
-
 def graph_data():
     # 假设您有一个DataFrame存储了站点和边的数据
     nodes = ['罗家庙', '邵阳', '冷水江', '新化', '柘溪', '桃江', '益阳', '城陵矶', '三门江', '新宁',
@@ -65,3 +64,5 @@ def graph_data():
     }
 
     return graph_data_dict
+
+
