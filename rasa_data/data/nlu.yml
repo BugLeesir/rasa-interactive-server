@@ -115,10 +115,6 @@ nlu:
    - [长江](stationName)河道站。
    - [大赉](stationName)河道站
 
-- lookup: stationName
-  examples: |
-   - 大赉
-   - 长江
 
 - intent: search_hydrometric_station
   examples: |
@@ -138,7 +134,7 @@ nlu:
 - intent: calculate_the_flood_transmission_time_with_locations
   examples: |
    - 我想计算[大赉](upStation)到[长江](downStation)的洪水传播时间
-   - 我想知到[大赉](upStation)到[长江](downStation)的洪水传播时间
+   - 我想知道[大赉](upStation)到[长江](downStation)的洪水传播时间
    - [大赉](upStation)到[长江](downStation)的洪水传播时间
    - 计算[大赉](upStation)到[长江](downStation)的洪水传播时间
    - 请计算[大赉](upStation)到[长江](downStation)的洪水传播时间
@@ -146,15 +142,18 @@ nlu:
 
 - intent: search_precipitation_by_name
   examples: |
-   - 我想知道[大赉](place)的降水量
    - [大赉](place)的降水量
    - [大赉](place)的降水量是多少
    - 请告诉我[大赉](place)的降水量
-   - 我想知道[长江](place)的降水量
+   - 我想查询[长江](place)的降水量
    - [长江](place)的降水量
    - [长江](place)的降水量是多少
    - 请告诉我[长江](place)的降水量
 
+- lookup: place
+  examples: |
+   - 大赉
+   - 长江
 
 - intent: search_precipitation
   examples: |
