@@ -163,3 +163,8 @@ nlu:
    - 请告诉我有关降水量的信息
    - 降水量查询
 
+- intent: draw_water_level_and_flow_relationship_line_by_name
+  examples: |
+   - 告诉我水位流量关系线
+   - 我要查询水位流量关系线
+   - 我想知道水位流量关系线
