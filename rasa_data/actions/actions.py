@@ -95,9 +95,6 @@ class ActionSearchHydrometricStationByName(Action):
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         
         stationName=tracker.get_slot("stationName")
-
-        # dispatcher.utter_message(f"名字是{stationName}")
-
         # 连接数据库
         conn = pymysql.connect(host='43.142.246.112', port=3306, user='common', password='common666', db='hydrology', charset='utf8')
         cur = conn.cursor(pymysql.cursors.DictCursor) # 生成游标对象
@@ -117,9 +114,7 @@ class ActionSearchHydrometricStationByName(Action):
             dispatcher.utter_message(f"站点位置: {data_item['location']}")
         else :
             dispatcher.utter_message("未查询到河道站,抱歉")    
-        
-        resetSlot="false"
-
+        resetSlot="false"                                       # 重置槽
         return[SlotSet('stationName', resetSlot)]
 
 class ActionFillHydrometricStationByLatestMassege(Action):
@@ -342,7 +337,7 @@ class ActionDrawWaterLevelAndFlowRelationshipLine(Action):
         plt.xlabel("waterlevel（m）") # 添加x轴标签
         plt.ylabel("flowrate（m^3 /s）") # 添加y轴标签
         plt.legend() # 添加图例
-        plt.savefig('figs/savefig_example.eps')
+        plt.savefig('savefig_example.png')
 
 
 
