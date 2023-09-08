@@ -2,6 +2,16 @@ version: "3.1"
 
 rules:
 
+- rule: Say hello anytime the user says hello
+  steps:
+  - intent: greet
+  - action: utter_greet
+
+- rule: Say thanks anytime the user says thanks
+  steps:
+  - intent: thanks
+  - action: utter_thanks
+  
 - rule: Say goodbye anytime the user says goodbye
   steps:
   - intent: goodbye
@@ -12,7 +22,61 @@ rules:
   - intent: bot_challenge
   - action: utter_iamabot
 
+- rule: cheer user up when user said he is sad
+  steps:
+  - intent: sad
+  - action: utter_sad
+
 - rule: return knowledge graph when user asks
   steps:
   - intent: inquire_knowledge_graph
   - action: action_get_knowledge_graph
+
+- rule: Activate flood time form
+  steps:
+  - intent: inquire_flood_time
+  - action: flood_time_form
+  - active_loop: flood_time_form
+
+- rule: Submit flood time form
+  condition:
+  - active_loop: flood_time_form
+  steps:
+  - action: flood_time_form
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  - action: action_get_flood_time
+- rule: Interruption in flood time form 1
+  condition:
+  - active_loop: flood_time_form
+  steps:
+  - intent: bot_challenge
+  - action: utter_iamabot
+  - action: flood_time_form
+  - active_loop: flood_time_form
+
+- rule: Activate place form
+  steps:
+  - intent: search_precipitation
+  - action: place_form
+  - active_loop: place_form
+
+- rule: Submit place form
+  condition:
+  - active_loop: place_form
+  steps:
+  - action: place_form
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  - action: action_search_precipitation_by_name
+
+- rule: Interruption in place form 1
+  condition:
+  - active_loop: place_form
+  steps:
+  - intent: bot_challenge
+  - action: utter_iamabot
+  - action: place_form
+  - active_loop: place_form

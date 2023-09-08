@@ -1,77 +1,10 @@
 version: "3.1"
 
 stories:
-
-- story: greet and inform
-  steps:
-  - intent: greet
-  - action: utter_greet
-
-- story: thanks and goodbye
-  steps:
-  - intent: thanks
-  - action: utter_thanks
-  - intent: goodbye
-  - action: utter_goodbye
-
-
-- story: be happy
-  steps:
-    - intent: sad
-    - action: utter_sad
-
-- story: query weather with location
-  steps:
-    - intent: ask_weather_with_location
-    - action: action_weather_api
-
-- story: handle weather query
-  steps:
-  - intent: weather_inform
-  - action: utter_ask_location
-  - intent: respond_by_single_place
-  - action: action_fill_location_by_latest_massage
-  - action: action_weather_api
-
 - story: search station by name
   steps:
   - intent: search_hydrometric_station_by_name
   - action: action_search_hydrometric_station_by_name
-
-- story: calculate the flood transmission time
-  steps:
-  - intent: calculate_the_flood_transmission_time
-  - action: utter_ask_upStation
-  - intent: respond_by_single_place
-  - action: action_fill_up_station_by_latest_massage
-  - action: utter_ask_downStation
-  - intent: respond_by_single_place
-  - action: action_fill_down_station_by_latest_massage
-  - action: utter_ask_waveSpeedcoef
-  - intent: respond_by_float_number
-  - action: action_fill_waveSpeedcoef_by_latest_massage
-  - action: action_calculate_the_flood_transmission_time
-
-- story: calculate the flood transmission time with locations
-  steps:
-  - intent: calculate_the_flood_transmission_time_with_locations
-  - action: utter_ask_waveSpeedcoef
-  - intent: respond_by_float_number
-  - action: action_fill_waveSpeedcoef_by_latest_massage
-  - action: action_calculate_the_flood_transmission_time
-
-- story: search precipitation by name
-  steps:
-  - intent: search_precipitation_by_name
-  - action: action_search_precipitation_by_name
-
-- story: search precipitation 
-  steps:
-  - intent: search_precipitation
-  - action: utter_ask_place
-  - intent: respond_by_single_place
-  - action: action_fill_place_by_latest_massage
-  - action: action_search_precipitation_by_name
 
 - story: inquire knowledge graph
   steps:
@@ -79,3 +12,88 @@ stories:
   - action: action_get_knowledge_graph
   - intent: thanks
   - action: utter_thanks
+
+- story: User doesn't want to continue place form
+  steps:
+  - intent: search_precipitation
+  - action: place_form
+  - active_loop: place_form
+  - intent: stop
+  - action: utter_ask_continue
+  - or:
+    - intent: stop
+    - intent: affirm
+  - action: action_deactivate_loop
+  - active_loop: null
+  - action: utter_affirm_stop
+
+- story: ask_place 1
+  steps:
+  - intent: search_precipitation
+  - action: place_form
+  - active_loop: place_form
+  - intent: stop
+  - action: utter_ask_continue
+  - or:
+    - intent: stop
+    - intent: affirm
+  - action: action_deactivate_loop
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  - action: utter_affirm_stop
+
+- story: User doesn't want to continue flood time form
+  steps:
+  - intent: inquire_flood_time
+  - action: flood_time_form
+  - active_loop: flood_time_form
+  - intent: stop
+  - action: utter_ask_continue
+  - or:
+    - intent: stop
+    - intent: affirm
+  - action: action_deactivate_loop
+  - active_loop: null
+  - action: utter_affirm_stop
+
+- story: ask_flood_time 1
+  steps:
+  - intent: inquire_flood_time
+  - action: flood_time_form
+  - active_loop: flood_time_form
+  - slot_was_set:
+    - requested_slot: source_station
+  - slot_was_set:
+    - source_station: 寸滩
+  - intent: stop
+  - action: utter_ask_continue
+  - or:
+    - intent: stop
+    - intent: affirm
+  - action: action_reset_source_station_slot
+  - action: action_deactivate_loop
+  - active_loop: null
+  - action: utter_affirm_stop
+  
+- story: ask_flood_time 2
+  steps:
+  - intent: inquire_flood_time
+  - action: flood_time_form
+  - active_loop: flood_time_form
+  - slot_was_set:
+    - requested_slot: source_station
+  - slot_was_set:
+    - source_station: 寸滩
+  - intent: stop
+  - action: utter_ask_continue
+  - or:
+    - intent: stop
+    - intent: affirm
+  - action: action_reset_source_station_slot
+  - action: action_deactivate_loop
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  - action: utter_affirm_stop
+

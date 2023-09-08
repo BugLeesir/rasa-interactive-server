@@ -24,11 +24,12 @@ nlu:
     - 拜拜
     - 下次再聊
 
-# - intent: affirm
-#   examples: |
-#     - 是的
-#     - 对的
-#     - 没错
+- intent: affirm
+  examples: |
+    - 是的
+    - 对的
+    - 没错
+    - 确定
 
 # - intent: deny
 #   examples: |
@@ -48,6 +49,18 @@ nlu:
     - are you a human?
     - am I talking to a bot?
     - am I talking to a human?
+    - 你是机器人吗？
+    - 你是AI吗？
+    - 你是人工智能吗？
+    - 我是在跟机器人聊天吗？
+    - 我是在跟人工智能聊天吗？
+    - 我是在跟AI聊天吗？
+    - 我实在不确定你是人还是机器人
+    - 我不确定你是人还是机器人
+    - 我不确定你是人还是AI
+    - 我不确定你是人还是人工智能
+    - 我不确定你是人还是人工智障
+    - 你是人工智障吗？
 
 - intent: sad
   examples: |
@@ -56,101 +69,110 @@ nlu:
     - 求安慰
     - I'm sad
 
-- intent: weather_inform
-  examples: |
-    - 天气怎么样
-    - 查看天气
-    - 天气如何
-    - 今天天气如何
-    - 我在南昌
-
-- intent: ask_weather_with_location
-  examples: |
-    - 在[北京](location)天气怎么样？
-    - [上海](location)现在的温度是多少？
-    - 我想知道[广州](location)的风速。
-    - 现在[新余](location)天气怎样？
-    - [南昌](location)天气怎样？
-
 - intent: respond_by_single_place
   examples: |
-   - 北京
-   - 新余
-   - 上海
-   - 武汉
-   - 江西
-   - 南昌
-   - 广州
-   - 天津
-   - 重庆
-   - 香港
-   - 台湾
-   - 大赉
-   - 测试河道
-
-- intent: respond_by_float_number
-  examples: |
-   - [1.2](waveSpeedcoef)
-   - [1.3](waveSpeedcoef)
-   - [1.4](waveSpeedcoef)
-   - [1.5](waveSpeedcoef)
-   - 1.6
-   - 0.8
-   - 0.9
-   - 1.0
-   - 1.1
-   - 0.3
-   - 0.4
-   - 0.5
-   - [0.6](waveSpeedcoef)
-
+    - 北京
+    - 新余
+    - 上海
+    - 武汉
+    - 江西
+    - 南昌
+    - 广州
+    - 天津
+    - 重庆
+    - 香港
+    - 台湾
+    - 大赉
+    - 测试河道
 
 - intent: search_hydrometric_station_by_name
   examples: |
-   - 我想查询名字为[大赉](stationName)的河道站。
-   - 有没有名字为[黑龙江](stationName)的河道站的信息。
-   - 名字为[松花江](stationName)的河道站的信息。
-   - 河道站名字[黄河](stationName)。
-   - 河道站名字为[长江](stationName)。
-   - [长江](stationName)河道站。
-   - [大赉](stationName)河道站
+    - 我想查询名字为[大赉](stationName)的河道站。
+    - 有没有名字为[黑龙江](stationName)的河道站的信息。
+    - 名字为[松花江](stationName)的河道站的信息。
+    - 河道站名字[黄河](stationName)。
+    - 河道站名字为[长江](stationName)。
+    - [长江](stationName)河道站。
+    - [大赉](stationName)河道站
 
-- intent: calculate_the_flood_transmission_time
+- intent: give_place
   examples: |
-   - 我想计算洪水传播时间
-   - 我想知到洪水传播时间
-   - 洪水传播时间
-   - 计算洪水传播时间
-   - 请计算洪水传播时间
-
-- intent: calculate_the_flood_transmission_time_with_locations
-  examples: |
-   - 我想计算[大赉](upStation)到[测试河道](downStation)的洪水传播时间
-   - 我想知到[大赉](upStation)到[测试河道](downStation)的洪水传播时间
-   - [大赉](upStation)到[测试河道](downStation)的洪水传播时间
-   - 计算[大赉](upStation)到[测试河道](downStation)的洪水传播时间
-   - 请计算[大赉](upStation)到[测试河道](downStation)的洪水传播时间
-
-- intent: search_precipitation_by_name
-  examples: |
-   - 我想知道[大赉](place)的降水量
-   - [大赉](place)的降水量
-   - [大赉](place)的降水量是多少
-   - 请告诉我[大赉](place)的降水量
-   - 我想知道[测试河道](place)的降水量
-   - [测试河道](place)的降水量
-   - [测试河道](place)的降水量是多少
-   - 请告诉我[测试河道](place)的降水量
+    - 我想知道[寸滩](place)的降水量
+    - [寸滩](place)的降水量
+    - [沙市](place)的降水量是多少
+    - 请告诉我[沙市](place)的降水量
+    - 我想知道[寸滩](place)的降水量
+    - [沙市](place)的降水量
+    - [寸滩](place)的降水量是多少
+    - 请告诉我[沙市](place)的降水量
+    - (寸滩)[place]的降水量是
+    - (沙市)[place]的降水量是
+    - (寸滩)[place]河道站
+    - (沙市)[place]河道站
+    - (寸滩)[place]站
+    - (沙市)[place]站
+    - (寸滩)[place]
+    - (沙市)[place]
 
 - intent: search_precipitation
   examples: |
-   - 我想查询降水量
-   - 有没有有关降水量的信息
-   - 降水量
-   - 请告诉我有关降水量的信息
-   - 降水量查询
+    - 我想查询降水量
+    - 有没有有关降水量的信息
+    - 降水量
+    - 请告诉我有关降水量的信息
+    - 降水量查询
+    - 我想知道降水量
 
 - intent: inquire_knowledge_graph
   examples: |
     - 我想要洪水传播时间的知识图谱
     - 洪水传播时间知识图谱
+    - 所有河道站之间的洪水传播时间图
+    - 洪水传播时间图
+    - 所有地方的洪水传播时间图
+- intent: inquire_flood_time
+  examples: |
+    - 我想要知道一个地方到一个地方的洪水传播时间
+    - 两个地方之间的洪水传播时间
+    - 洪水传播时间
+    - 查询一下洪水传播时间
+    - 两地之间的洪水传播时间
+    - 你可以告诉我两个地方的洪水传播时间吗
+    - 我想要知道洪水从一地到另一地要多久
+    - 我想要知道洪水从一个地方到另一个地方要多久
+    - 我想要知道洪水从一个城市到另一个城市要多久
+    - 查询洪水传播时间
+    - 查洪水传播时间
+    - 洪水传播时间查询
+    - 查洪水
+    - 我想查洪水传播时间
+- intent: give_source_station
+  examples: |
+    - 起点是[寸滩](source_station)
+    - [寸滩](source_station)河道站
+    - [桃江](source_station)河道站
+    - 起点是[桃江](source_station)
+    - [寸滩](source_station)
+    - [桃江](source_station)
+- intent: give_destination_station
+  examples: |
+    - [枝城](destination_station)河道站
+    - [益阳](destination_station)河道站
+    - 终点是[枝城](destination_station)
+    - 终点是[益阳](destination_station)
+    - [枝城](destination_station)
+    - [益阳](destination_station)
+
+- intent: stop
+  examples: |
+    - 停止
+    - 停止吧
+    - 停下来
+    - 停下来吧
+    - 我们开始聊天吧
+    - 算了,我又不想查了
+    - 算了,我又不想查了,我们聊点别的吧
+    - 我不想查了
+    - 我不查这个了
+    - 停止查询
+    - 终止查询
