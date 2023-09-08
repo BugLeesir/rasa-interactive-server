@@ -19,6 +19,7 @@ intents:
   - give_source_and_destination_station
   - stop
   - affirm
+  - draw_water_level_and_flow_relationship_line_by_name
 actions:
   - action_get_knowledge_graph
   - action_search_hydrometric_station_by_name
@@ -26,6 +27,7 @@ actions:
   - action_fill_place_by_latest_massage
   - action_get_flood_time
   - action_reset_source_station_slot
+  - action_draw_water_level_and_flow_relationship_line_by_name 
 
 responses:
   utter_greet:

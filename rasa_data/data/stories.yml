@@ -97,3 +97,10 @@ stories:
     - requested_slot: null
   - action: utter_affirm_stop
 
+- story: draw water level and flow relationship line by name
+  steps:
+  - intent: draw_water_level_and_flow_relationship_line_by_name
+  - action: utter_ask_place
+  - intent: respond_by_single_place
+  - action: action_fill_place_by_latest_massage
+  - action: action_draw_water_level_and_flow_relationship_line_by_name    

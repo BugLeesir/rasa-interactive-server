@@ -61,7 +61,9 @@ from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.types import DomainDict
 from rasa_sdk.events import SlotSet
-
+import numpy as np
+import scipy.optimize as opt
+import matplotlib.pyplot as plt
 
 class ActionSearchHydrometricStationByName(Action):
     def name(self) -> Text:
@@ -213,10 +215,6 @@ class ActionGetFloodTime(Action):
         dispatcher.utter_message(f"从{source_station}到{destination_station}的洪水传播时间为{dis[end]} h")
         return [SlotSet("source_station", None), SlotSet("destination_station", None)]
     
-
-        
-
-
         
 class ActionResetSourceStationSlot(Action):
     def name(self):
@@ -225,3 +223,48 @@ class ActionResetSourceStationSlot(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         return [SlotSet("source_station", None)]
+    
+
+class ActionDrawWaterLevelAndFlowRelationshipLine(Action):
+    def name(self) -> Text:
+        return "action_draw_water_level_and_flow_relationship_line_by_name"
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        place=tracker.get_slot("place")
+
+        conn = pymysql.connect(host='43.142.246.112', port=3306, user='common', password='common666', db='hydrology', charset='utf8')
+        cur = conn.cursor(pymysql.cursors.DictCursor) # 生成游标对象
+        sql=f"select * from waterlevel where station_id in (select station_id from hydrometric_station where name='{place}' )"
+        cur.execute(sql)
+        w=cur.fetchall()
+
+
+
+        stage = np.array([d["water_level"] for d in w]) # 提取水位值
+        discharge = np.array([d["flow_rate"] for d in w]) # 提取流量值
+
+        # 定义模型函数
+        def model(x, a, b):
+            return a * x + b
+
+        # 拟合最小二乘法
+        p0 = [1, 1] # 初始参数值
+        popt, pcov = opt.curve_fit(model, stage, discharge, p0) # 使用curve_fit函数求解最优参数值
+        a, b = popt # 最优参数值
+
+        # 绘制图像
+        plt.plot(stage, discharge, "bo", label="actual") # 绘制实际数据点，蓝色圆点
+        plt.plot(stage, model(stage, a, b), "r-", label="fit") # 绘制拟合曲线，红色实线
+        plt.title("WaterLevelAndFlowRelationshipLine") # 添加标题
+        plt.xlabel("waterlevel（m）") # 添加x轴标签
+        plt.ylabel("flowrate（m^3 /s）") # 添加y轴标签
+        plt.legend() # 添加图例
+        plt.savefig('savefig_example.png')
+
+
+
+        cur.close()
+        conn.close()
+        
+        return []
