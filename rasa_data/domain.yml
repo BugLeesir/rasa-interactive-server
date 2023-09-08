@@ -7,32 +7,25 @@ intents:
   - nlu_fallback  
   - bot_challenge
   - sad
-  - weather_inform
-  - ask_weather_with_location
   - respond_by_single_place
   - respond_by_float_number
   - search_hydrometric_station_by_name
-  - search_hydrometric_station
-  - calculate_the_flood_transmission_time
-  - calculate_the_flood_transmission_time_with_locations
-  - search_precipitation_by_name
+  - give_place
   - search_precipitation
   - inquire_knowledge_graph
-  - draw_water_level_and_flow_relationship_line_by_name
-
+  - inquire_flood_time
+  - give_source_station
+  - give_destination_station
+  - give_source_and_destination_station
+  - stop
+  - affirm
 actions:
-  - action_weather_api
-  - action_fill_location_by_latest_massage
+  - action_get_knowledge_graph
   - action_search_hydrometric_station_by_name
-  - action_fill_hydrometric_station_by_latest_massege
-  - action_fill_waveSpeedcoef_by_latest_massage
-  - action_fill_up_station_by_latest_massage
-  - action_fill_down_station_by_latest_massage
-  - action_calculate_the_flood_transmission_time
   - action_search_precipitation_by_name
   - action_fill_place_by_latest_massage
-  - action_get_knowledge_graph
-  - action_draw_water_level_and_flow_relationship_line_by_name 
+  - action_get_flood_time
+  - action_reset_source_station_slot
 
 responses:
   utter_greet:
@@ -43,63 +36,74 @@ responses:
     - text: "再见！"
   utter_iamabot:
     - text: "I am a bot, powered by Rasa."
+    - text: "I'm a bot, my name is Rasa."
+    - text: "I'm a bot, my name is Rasa, I'm here to help you."
+    - text: 我是一个机器人，我的名字是Rasa，我在这里帮助你。
+    - text: 我是一个机器人，我的名字是Rasa。
+    - text: 我是一个AI，我的名字是Rasa，我在这里帮助你。
   utter_sad:
     - text: "别伤心了， 睡一觉吧"
-  utter_ask_location:
-    - text: "请告诉我您的位置信息。"
-  utter_weather_error:
-    - text: "对不起，无法获取该地区的天气信息。"
-  utter_ask_upStation:
-    - text: "请告诉我上游河道站的名称。"
-  utter_ask_downStation:
-    - text: "请告诉我下游河道站的名称。"
-  utter_ask_waveSpeedcoef:
-    - text: "请告诉我波速系数。"
+  utter_ask_source_station:
+    - text: 请给出起点河道站
+  utter_ask_destination_station:
+    - text: 所以起点是{source_station},那么终点河道站是?
   utter_ask_place:
-    - text: "请告诉我你要查询的地点"
-  utter_ask_station:
-    - text: "你要查询哪个河道站的信息"
-
+    - text: 请告诉我你要查询的地点
+  utter_ask_continue:
+    - text: 你确定要终止吗
+    - text: 你确定吗
+    - text: 你确定现在停止吗
+  utter_affirm_stop:
+    - text: 好的，已经停止了
 
 entities:
-  - location
   - stationName
-  - upStation
-  - downStation
-  - waveSpeedcoef
   - place
+  - source_station
+  - destination_station
   
 slots:
-  location:
-    type: text
-    mappings:
-    - type: from_entity
-      entity: location
   stationName:
     type: text
     mappings:
     - type: from_entity
       entity: stationName
-  upStation:
-    type: text
-    mappings:
-    - type: from_entity
-      entity: upStation
-  downStation:
-    type: text
-    mappings:
-    - type: from_entity
-      entity: downStation
-  waveSpeedcoef:
-    type: text
-    mappings:
-    - type: from_entity
-      entity: waveSpeedcoef
   place:
     type: text
+    influence_conversation: true
     mappings:
     - type: from_entity
       entity: place
+      conditions:
+      - active_loop: place_form
+        requested_slot: place
+  source_station:
+    type: text
+    influence_conversation: true
+    mappings:
+    - type: from_entity
+      entity: source_station
+      conditions:
+      - active_loop: flood_time_form
+        requested_slot: source_station
+  destination_station:
+    type: text
+    influence_conversation: true
+    mappings:
+    - type: from_entity
+      entity: destination_station
+      conditions:
+      - active_loop: flood_time_form
+        requested_slot: destination_station
+
+forms:
+  flood_time_form:
+    required_slots:
+    - source_station
+    - destination_station
+  place_form:
+    required_slots:
+    - place
 
 session_config:
   session_expiration_time: 60

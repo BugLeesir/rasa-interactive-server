@@ -53,38 +53,14 @@
 
 import requests
 import pymysql
+from py2neo import Graph, Node, Relationship, NodeMatcher, RelationshipMatcher
+import pandas as pd
+import json
 from typing import Any, Text, Dict, List
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.types import DomainDict
 from rasa_sdk.events import SlotSet
-from py2neo import Graph
-import pandas as pd
-import json
-import numpy as np
-import scipy.optimize as opt
-import matplotlib.pyplot as plt
-
-class WeatherAPIAction(Action):
-    def name(self) -> Text:
-        return "action_weather_api"
-
-    def run(self, dispatcher: CollectingDispatcher,tracker: Tracker,domain: DomainDict) -> List[Dict[Text, Any]]:
-        location=tracker.get_slot("location")
-        dispatcher.utter_message(f"你来自{location},现在程序正在开发中，请勿着急")
-        return []
-    
-class ActionFillLocationByLatestMassage(Action):
-    def name(self) -> Text:
-        return "action_fill_location_by_latest_massage"
-    def run(self, dispatcher: CollectingDispatcher,
-            tracker: Tracker,
-            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        # 获取用户位置
-
-        location=tracker.latest_message.get('text') # 将用户回答的位置作为location
-        # 将槽填充
-        return [SlotSet('location',location)]
 
 
 class ActionSearchHydrometricStationByName(Action):
@@ -95,6 +71,9 @@ class ActionSearchHydrometricStationByName(Action):
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         
         stationName=tracker.get_slot("stationName")
+
+        # dispatcher.utter_message(f"名字是{stationName}")
+
         # 连接数据库
         conn = pymysql.connect(host='43.142.246.112', port=3306, user='common', password='common666', db='hydrology', charset='utf8')
         cur = conn.cursor(pymysql.cursors.DictCursor) # 生成游标对象
@@ -114,128 +93,10 @@ class ActionSearchHydrometricStationByName(Action):
             dispatcher.utter_message(f"站点位置: {data_item['location']}")
         else :
             dispatcher.utter_message("未查询到河道站,抱歉")    
-        resetSlot="false"                                       # 重置槽
+        
+        resetSlot="false"
+
         return[SlotSet('stationName', resetSlot)]
-
-class ActionFillHydrometricStationByLatestMassege(Action):
-    def name(self) -> Text:
-        return "action_fill_hydrometric_station_by_latest_massege"
-    def run(self, dispatcher: CollectingDispatcher,
-            tracker: Tracker,
-            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-    
-        stationName=tracker.latest_message.get('text') 
-
-        # 将槽填充
-        return [SlotSet('stationName',stationName)]
-
-
-class ActionFillWaveSpeedCoefByLatestMassaege(Action):
-    def name(self) -> Text:
-        return "action_fill_waveSpeedcoef_by_latest_massage"
-    def run(self, dispatcher: CollectingDispatcher,
-            tracker: Tracker,
-            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-    
-        waveSpeedcoef=tracker.latest_message.get('text') # 将用户回答作为波速系数
-        # 将槽填充
-        return [SlotSet('waveSpeedcoef',waveSpeedcoef)]
-
-
-class ActionFillUpStationByLatestMassage(Action):
-    def name(self) -> Text:
-        return "action_fill_up_station_by_latest_massage"
-    def run(self, dispatcher: CollectingDispatcher,
-            tracker: Tracker,
-            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        
-        upStation=tracker.latest_message.get('text') # 将用户回答作为上河道站
-
-        # 将槽填充
-        return [SlotSet('upStation',upStation)]
-
-class ActionFillDownStationByLatestMassage(Action):
-    def name(self) -> Text:
-        return "action_fill_down_station_by_latest_massage"
-    def run(self, dispatcher: CollectingDispatcher,
-            tracker: Tracker,
-            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        
-        downStation=tracker.latest_message.get('text') # 将用户回答作为下河道站
-        # 将槽填充
-        return [SlotSet('downStation',downStation)]
-    
-class CalculateTheFloodTransmissionTime(Action):
-    def name(self) -> Text:
-        return "action_calculate_the_flood_transmission_time"
-    def run(self, dispatcher: CollectingDispatcher,
-            tracker: Tracker,
-            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        
-        waveSpeedcoef=tracker.get_slot("waveSpeedcoef")
-        upStation=tracker.get_slot("upStation")
-        downStation=tracker.get_slot("downStation")
-        
-        # 连接数据库
-        conn = pymysql.connect(host='43.142.246.112', port=3306, user='common', password='common666', db='hydrology', charset='utf8')
-        cur = conn.cursor(pymysql.cursors.DictCursor) # 生成游标对象
-        sql=f"select * from hydrometric_station where name='{upStation}'"
-        cur.execute(sql)
-        upStationTemp=cur.fetchall()
-        if len(upStationTemp)==0:
-            dispatcher.utter_message("上河道站信息缺少抱歉,抱歉")
-            return []
-        upStationTempItem=upStationTemp[0]
-        upStationID=upStationTempItem['station_id']
-        sql=f"select * from waterlevel where station_id='{upStationID}'"
-        cur.execute(sql)
-        upStationData=cur.fetchall()
-        if len(upStationData)==0:
-            dispatcher.utter_message("上河道站缺少水位流量信息，抱歉")
-            return []
-        sql=f"select * from hydrometric_station where name='{downStation}'"
-        cur.execute(sql)
-        downStationTemp=cur.fetchall()
-        if len(downStationTemp)==0:
-            dispatcher.utter_message("下河道站信息缺少抱歉,抱歉")
-            return []
-        downStationTempItem=downStationTemp[0]
-        downStationID=downStationTempItem['station_id']
-        sql=f"select * from waterlevel where station_id='{downStationID}'"
-        cur.execute(sql)
-        downStationData=cur.fetchall()
-        if len(downStationData)==0:
-            dispatcher.utter_message("下河道站缺少水位流量信息，抱歉")
-            return []
-        cur.close()
-        conn.close()
-
-        # 计算洪水传播时间
-
-        upStationDataItem=upStationData[0]
-        downStationDataItem=downStationData[0]
-
-        Q1=upStationDataItem['flow_rate']
-        Q2=downStationDataItem['flow_rate']    # 获取两个站点的流量
-
-        # Z1=upStationDataItem['water_level']
-        # Z2=downStationDataItem['water_level']  # 获取两个站点的水位线（可能要判断是否达到警戒线？）
-
-        
-
-        L=10000                                # 假定两个站点之间距离10km
-
-        V=(Q1+Q2)/2                            # 计算断面平均流量
-
-        u=float(waveSpeedcoef)*V                      # 计算波速
-
-        t=L/u                                  # 计算洪水传播时间
-
-        format_time=round(t,2)                 # 保留两位小数
-
-        dispatcher.utter_message(f"洪水传播时间：{format_time}s")
-
-        return []
     
 class ActionSearchPrecipitationByName(Action):
     def name(self) -> Text:
@@ -246,7 +107,7 @@ class ActionSearchPrecipitationByName(Action):
         
         place=tracker.get_slot("place")
 
-        dispatcher.utter_message(f"{place}")
+        # dispatcher.utter_message(f"{place}")
   
         # 连接数据库
         conn = pymysql.connect(host='43.142.246.112', port=3306, user='common', password='common666', db='hydrology', charset='utf8')
@@ -272,10 +133,9 @@ class ActionSearchPrecipitationByName(Action):
         cur.close()
         conn.close()
         
-        resetSlot="false" # 将槽重置
+        resetSlot=None # 将槽重置
 
         return[SlotSet('place', resetSlot)]
-
 
 class ActionFillPlaceByLatestMassage(Action):
     def name(self) -> Text:
@@ -284,7 +144,7 @@ class ActionFillPlaceByLatestMassage(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         
-         
+        
         place=tracker.latest_message.get('text') # 将用户回答作为用户的位置
 
         # 将槽填充
@@ -293,55 +153,75 @@ class ActionFillPlaceByLatestMassage(Action):
 class ActionGetKnowledgeGraph(Action):
     def name(self) -> Text:
         return "action_get_knowledge_graph"
-    def run(self, dispatcher,tracker,domain):
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         graph = Graph('bolt://43.142.246.112:7687',auth=('neo4j','common666'))
         cypher1 = "match (n:riverstation) return n.name as node"
         cypher2 = "match (n:riverstation)-[r]->(m:riverstation) return STARTNODE(r) as source,ENDNODE(r) as target,r.time as time"
         node_df = graph.run(cypher1).to_data_frame()
         edge_df = graph.run(cypher2).to_data_frame()
-        dispatcher.utter_message(text="test")
+        dispatcher.utter_message(f"test")
         return []
-
-class ActionDrawWaterLevelAndFlowRelationshipLine(Action):
-    def name(self) -> Text:
-        return "action_draw_water_level_and_flow_relationship_line_by_name"
+    
+class ActionGetFloodTime(Action):
+    def name(self):
+        return "action_get_flood_time"
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        place=tracker.get_slot("place")
+        source_station = tracker.get_slot("source_station")
+        destination_station = tracker.get_slot("destination_station")
+        graph = Graph('bolt://43.142.246.112:7687', auth=('neo4j', 'common666'))
+        cypher1 = "match (n:riverstation) return n.name as node"
+        cypher2 = ("match (n:riverstation)-[r]->(m:riverstation) return STARTNODE(r) as source,ENDNODE(r) as target,"
+                   "r.time as time")
+        node_df = graph.run(cypher1).to_data_frame()
+        edge_df = graph.run(cypher2).to_data_frame()
+        # 数据处理
+        node_list = node_df["node"].tolist()
+        source_list = edge_df["source"].tolist()
+        target_list = edge_df["target"].tolist()
+        time_list = edge_df["time"].tolist()
+        edge_list = list()
+        for i in range(len(source_list)):
+            edge_list.append([source_list[i]["name"], target_list[i]["name"], time_list[i]])
+        # 构造邻接矩阵
+        inf = 999999
+        adj_matrix = [[inf for i in range(len(node_list))] for j in range(len(node_list))]
+        for i in range(len(adj_matrix)):
+            adj_matrix[i][i] = 0
+        for relation in edge_list:
+            x = node_list.index(relation[0])
+            y = node_list.index(relation[1])
+            adj_matrix[x][y] = relation[2]
+        start = node_list.index(source_station)
+        end = node_list.index(destination_station)
+        # dijkstra算法
+        passed = [start]
+        nopass = [x for x in range(len(adj_matrix)) if x != start]
+        dis = adj_matrix[start]
 
-        conn = pymysql.connect(host='43.142.246.112', port=3306, user='common', password='common666', db='hydrology', charset='utf8')
-        cur = conn.cursor(pymysql.cursors.DictCursor) # 生成游标对象
-        sql=f"select * from waterlevel where station_id in (select station_id from hydrometric_station where name='{place}' )"
-        cur.execute(sql)
-        w=cur.fetchall()
+        while len(nopass):
+            idx = nopass[0]
+            for i in nopass:
+                if dis[i] < dis[idx]: idx = i
+            nopass.remove(idx)
+            passed.append(idx)
+            for i in nopass:
+                if dis[idx] + adj_matrix[idx][i] < dis[i]: dis[i] = dis[idx] + adj_matrix[idx][i]
+        dispatcher.utter_message(f"从{source_station}到{destination_station}的洪水传播时间为{dis[end]} h")
+        return [SlotSet("source_station", None), SlotSet("destination_station", None)]
+    
 
-
-
-        stage = np.array([d["water_level"] for d in w]) # 提取水位值
-        discharge = np.array([d["flow_rate"] for d in w]) # 提取流量值
-
-        # 定义模型函数
-        def model(x, a, b):
-            return a * x + b
-
-        # 拟合最小二乘法
-        p0 = [1, 1] # 初始参数值
-        popt, pcov = opt.curve_fit(model, stage, discharge, p0) # 使用curve_fit函数求解最优参数值
-        a, b = popt # 最优参数值
-
-        # 绘制图像
-        plt.plot(stage, discharge, "bo", label="actual") # 绘制实际数据点，蓝色圆点
-        plt.plot(stage, model(stage, a, b), "r-", label="fit") # 绘制拟合曲线，红色实线
-        plt.title("WaterLevelAndFlowRelationshipLine") # 添加标题
-        plt.xlabel("waterlevel（m）") # 添加x轴标签
-        plt.ylabel("flowrate（m^3 /s）") # 添加y轴标签
-        plt.legend() # 添加图例
-        plt.savefig('savefig_example.png')
-
-
-
-        cur.close()
-        conn.close()
         
-        return []
+
+
+        
+class ActionResetSourceStationSlot(Action):
+    def name(self):
+        return "action_reset_source_station_slot"
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        return [SlotSet("source_station", None)]
