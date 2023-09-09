@@ -22,14 +22,6 @@
             </span>
         </template>
       </el-submenu>
-      <el-submenu index="3">
-        <template slot="title">
-            <i class="el-icon-setting"></i>
-            <span slot="title">
-              <router-link to="/water_flow" class="router-link">水位流量关系线</router-link>
-            </span>
-        </template>
-      </el-submenu>
     </el-menu>
   </el-col>
 </template>
