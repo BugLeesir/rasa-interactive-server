@@ -30,14 +30,6 @@ const router = new VueRouter({
                 keepalive: true
             }
 
-        },
-        {
-            path:"/water_flow",
-            name:"water_flow",
-            component: ()=>import("@/components/WaterFlow.vue"),
-            meta:{
-                keepalive:true
-            }
         }
     ]
 })

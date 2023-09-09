@@ -5,6 +5,9 @@
         <div v-for="(message, index) in messages" :key="index" class="message" :class="{ 'user-message': message.from === 'user', 'rasa-message': message.from === 'rasa' }">
           <span class="prompt">{{message.prompt}}</span>
           {{ message.text }}
+          <div v-if="index === messages.length - 1 && imgSrc">
+            <img :src="imgSrc" alt="Water Flow Chart">
+          </div>
         </div>
       </div>
       <div class="form-div">
@@ -23,12 +26,13 @@ export default {
   data(){
     return {
       questions:"",
-      messages:[]
+      messages:[],
+      imgSrc:null
     }
   },
   methods:{
     async onSubmit() {
-      console.log("发送问题成功：" + this.questions)
+      this.imgSrc=null
       this.messages.push({text:this.questions,from:"user",prompt:"您："})
       const response = await axios.post("http://localhost:5005/webhooks/rest/webhook", {
         message: this.questions
@@ -37,7 +41,6 @@ export default {
           "Content-Type": "application/json"
         }
       })
-      this.questions=""
       // 交互处理
       const data = response.data
       if(data.length===0){
@@ -46,6 +49,35 @@ export default {
       }
       for (let i = 0; i < data.length; i++) {
         this.messages.push({text:data[i].text,from:"rasa",prompt:"防洪减灾机器人："})
+      }
+
+      this.checkWaterFlow()
+      this.imgSrc=null
+      this.questions=""
+
+    },
+    checkWaterFlow(){
+      const stationNames=["沙市","枝城","寸滩","桃源","桃江"]
+      let matchedStation=null
+
+      for (const station of stationNames){
+        if(this.questions.includes(station)){
+          matchedStation=station
+          break
+        }
+      }
+      if(matchedStation){
+        axios.post("/charts/get_water_flow_data",{place:matchedStation},{responseType:"blob"})
+            .then(response=>{
+              this.messages.push({text:"水位流量关系线如下：",from:"rasa",prompt:"防洪减灾机器人："})
+
+              const blob = new Blob([response.data],{type:"image/png"})
+              const url=window.URL.createObjectURL(blob)
+              this.imgSrc=url
+            })
+            .catch(error=>{
+              console.log("获取水位流量关系线图片失败："+error)
+            })
       }
     }
   }
