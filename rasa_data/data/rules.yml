@@ -80,3 +80,28 @@ rules:
   - action: utter_iamabot
   - action: place_form
   - active_loop: place_form
+
+- rule: Activate water line form
+  steps:
+  - intent: draw_water_level_and_flow_relationship_line_by_name
+  - action: water_line_place_form
+  - active_loop:  water_line_place_form
+
+- rule: Submit water line form
+  condition:
+  - active_loop:  water_line_place_form
+  steps:
+  - action: water_line_place_form
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  - action: action_draw_water_level_and_flow_relationship_line_by_name
+
+- rule: Interruption in water line form 1
+  condition:
+  - active_loop:  water_line_place_form
+  steps:
+  - intent: bot_challenge
+  - action: utter_iamabot
+  - action: water_line_place_form
+  - active_loop:  water_line_place_form

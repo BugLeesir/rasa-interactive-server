@@ -31,11 +31,16 @@ nlu:
     - 没错
     - 确定
 
-# - intent: deny
-#   examples: |
-#     - 不是的
-#     - 不对
-#     - 错了
+- intent: deny
+  examples: |
+    - 不确定
+    - 不
+    - 算了
+    - 不是
+    - 不对
+    - 不好
+    - 不行
+    - 还是不了
 
 # - intent: inform
 #   examples: |
@@ -87,13 +92,21 @@ nlu:
 
 - intent: search_hydrometric_station_by_name
   examples: |
-    - 我想查询名字为[大赉](stationName)的河道站。
-    - 有没有名字为[黑龙江](stationName)的河道站的信息。
-    - 名字为[松花江](stationName)的河道站的信息。
-    - 河道站名字[黄河](stationName)。
-    - 河道站名字为[长江](stationName)。
-    - [长江](stationName)河道站。
-    - [大赉](stationName)河道站
+    - [寸滩](stationName)的信息
+    - [桃江](stationName)的信息
+    - [枝城](stationName)的信息
+    - [益阳](stationName)的信息
+    - [桃源](stationName)的信息
+    - [寸滩](stationName)河道站的信息
+    - [桃江](stationName)河道站的信息
+    - [枝城](stationName)河道站的信息
+    - [益阳](stationName)河道站的信息
+    - [桃源](stationName)河道站的信息
+    - 我想查名为[寸滩](stationName)的河道站的信息
+    - 我想查名为[桃江](stationName)的河道站的信息
+    - 我想查名为[枝城](stationName)的河道站的信息
+    - 我想查名为[益阳](stationName)的河道站的信息
+    - 我想查名为[桃源](stationName)的河道站的信息
 
 - intent: give_place
   examples: |
@@ -105,14 +118,27 @@ nlu:
     - [沙市](place)的降水量
     - [寸滩](place)的降水量是多少
     - 请告诉我[沙市](place)的降水量
-    - (寸滩)[place]的降水量是
-    - (沙市)[place]的降水量是
-    - (寸滩)[place]河道站
-    - (沙市)[place]河道站
-    - (寸滩)[place]站
-    - (沙市)[place]站
-    - (寸滩)[place]
-    - (沙市)[place]
+    - [寸滩](place)的降水量是
+    - [沙市](place)的降水量是
+    - [寸滩](place)河道站
+    - [沙市](place)河道站
+    - [寸滩](place)
+    - [沙市](place)
+    - [桃源](place)
+    - [枝城](place)
+    - [桃江](place)
+    - [桃源](place)河道站
+    - [枝城](place)河道站
+    - [桃江](place)河道站
+    - [桃源](place)降水量
+    - [枝城](place)降水量
+    - [桃江](place)降水量
+    - [桃源](place)的降水量
+    - [枝城](place)的降水量
+    - [桃江](place)的降水量
+    - [桃源](place)的降水量是多少
+    - [枝城](place)的降水量是多少
+    - [桃江](place)的降水量是多少
 
 - intent: search_precipitation
   examples: |
@@ -122,6 +148,8 @@ nlu:
     - 请告诉我有关降水量的信息
     - 降水量查询
     - 我想知道降水量
+    - 查降水量
+    - 我想查降水量
 
 - intent: inquire_knowledge_graph
   examples: |
@@ -154,6 +182,12 @@ nlu:
     - 起点是[桃江](source_station)
     - [寸滩](source_station)
     - [桃江](source_station)
+    - [津市](source_station)
+    - [津市](source_station)河道站
+    - 起点是[津市](source_station)
+    - [长沙](source_station)河道站
+    - 起点是[长沙](source_station)
+    - [长沙](source_station)
 - intent: give_destination_station
   examples: |
     - [枝城](destination_station)河道站
@@ -162,23 +196,65 @@ nlu:
     - 终点是[益阳](destination_station)
     - [枝城](destination_station)
     - [益阳](destination_station)
+    - [南花](destination_station)
+    - [南花](destination_station)河道站
+    - 终点是[南花](destination_station)
+    - [城陵矶](destination_station)河道站
+    - 终点是[城陵矶](destination_station)
+    - [城陵矶](destination_station)
 
 - intent: stop
   examples: |
-    - 停止
-    - 停止吧
-    - 停下来
-    - 停下来吧
     - 我们开始聊天吧
-    - 算了,我又不想查了
-    - 算了,我又不想查了,我们聊点别的吧
+    - 我又不想查了
+    - 我又不想查了,我们聊点别的吧
     - 我不想查了
     - 我不查这个了
     - 停止查询
     - 终止查询
+    - 不想查询了
+    - 不查了
+    - 我不查了
 
 - intent: draw_water_level_and_flow_relationship_line_by_name
   examples: |
-   - 告诉我水位流量关系线
-   - 我要查询水位流量关系线
-   - 我想知道水位流量关系线
+    - 告诉我水位流量关系线
+    - 我要查询水位流量关系线
+    - 我想知道水位流量关系线
+    - 查询水位流量关系线
+    - 查水位流量关系线
+    - 水位流量关系线查询
+    - 水位流量关系线
+    - 水位流量关系线图
+
+- intent: give_water_line_place
+  examples: |
+    - [寸滩](water_line_place)
+    - [桃江](water_line_place)
+    - [枝城](water_line_place)
+    - [益阳](water_line_place)
+    - [桃源](water_line_place)
+    - [寸滩](water_line_place)河道站
+    - [桃江](water_line_place)河道站
+    - [枝城](water_line_place)河道站
+    - [益阳](water_line_place)河道站
+    - [桃源](water_line_place)河道站
+    - [寸滩](water_line_place)水位流量关系线
+    - [桃江](water_line_place)水位流量关系线
+    - [枝城](water_line_place)水位流量关系线
+    - [益阳](water_line_place)水位流量关系线
+    - [桃源](water_line_place)水位流量关系线
+    - [寸滩](water_line_place)的水位流量关系线
+    - [桃江](water_line_place)的水位流量关系线
+    - [枝城](water_line_place)的水位流量关系线
+    - [益阳](water_line_place)的水位流量关系线
+    - [桃源](water_line_place)的水位流量关系线
+    - [寸滩](water_line_place)的水位流量关系
+    - [桃江](water_line_place)的水位流量关系
+    - [枝城](water_line_place)的水位流量关系
+    - [益阳](water_line_place)的水位流量关系
+    - [桃源](water_line_place)的水位流量关系
+    - [寸滩](water_line_place)水位流量
+    - [桃江](water_line_place)水位流量
+    - [枝城](water_line_place)水位流量
+    - [益阳](water_line_place)水位流量

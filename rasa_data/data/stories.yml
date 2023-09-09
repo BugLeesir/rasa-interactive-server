@@ -27,7 +27,7 @@ stories:
   - active_loop: null
   - action: utter_affirm_stop
 
-- story: ask_place 1
+- story: ask_place + stop
   steps:
   - intent: search_precipitation
   - action: place_form
@@ -43,6 +43,26 @@ stories:
     - requested_slot: null
   - action: utter_affirm_stop
 
+- story: ask_place + continue
+  steps:
+  - intent: search_precipitation
+  - action: place_form
+  - active_loop: place_form
+  - intent: stop
+  - action: utter_ask_continue
+  - intent: deny
+  - action: utter_deny_stop
+  - action: place_form
+  - active_loop: place_form
+  - slot_was_set:
+    - requested_slot: place
+  - slot_was_set:
+    - place: 沙市
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_search_precipitation_by_name
+
 - story: User doesn't want to continue flood time form
   steps:
   - intent: inquire_flood_time
@@ -57,7 +77,7 @@ stories:
   - active_loop: null
   - action: utter_affirm_stop
 
-- story: ask_flood_time 1
+- story: ask_flood_time 1 + stop
   steps:
   - intent: inquire_flood_time
   - action: flood_time_form
@@ -76,7 +96,7 @@ stories:
   - active_loop: null
   - action: utter_affirm_stop
   
-- story: ask_flood_time 2
+- story: ask_flood_time 2 + stop
   steps:
   - intent: inquire_flood_time
   - action: flood_time_form
@@ -97,10 +117,100 @@ stories:
     - requested_slot: null
   - action: utter_affirm_stop
 
-- story: draw water level and flow relationship line by name
+- story: ask_flood_time 1 + continue
+  steps:
+  - intent: inquire_flood_time
+  - action: flood_time_form
+  - active_loop: flood_time_form
+  - intent: stop
+  - action: utter_ask_continue
+  - intent: deny
+  - action: utter_deny_stop
+  - action: flood_time_form
+  - active_loop: flood_time_form
+  - slot_was_set:
+    - requested_slot: source_station
+  - slot_was_set:
+    - source_station: 寸滩
+  - slot_was_set:
+    - requested_slot: destination_station
+  - slot_was_set:
+    - destination_station: 南花
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_get_flood_time
+
+- story: ask_flood_time 2 + continue
+  steps:
+  - intent: inquire_flood_time
+  - action: flood_time_form
+  - active_loop: flood_time_form
+  - slot_was_set:
+    - requested_slot: source_station
+  - slot_was_set:
+    - source_station: 桃江
+  - intent: stop
+  - action: utter_ask_continue
+  - intent: deny
+  - action: utter_deny_stop
+  - action: flood_time_form
+  - active_loop: flood_time_form
+  - slot_was_set:
+    - requested_slot: destination_station
+  - slot_was_set:
+    - destination_station: 南花
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_get_flood_time
+
+- story: User doesn't want to continue water line form
   steps:
   - intent: draw_water_level_and_flow_relationship_line_by_name
-  - action: utter_ask_place
-  - intent: respond_by_single_place
-  - action: action_fill_place_by_latest_massage
-  - action: action_draw_water_level_and_flow_relationship_line_by_name    
+  - action: water_line_place_form
+  - active_loop:  water_line_place_form
+  - intent: stop
+  - action: utter_ask_continue
+  - or:
+    - intent: stop
+    - intent: affirm
+  - action: action_deactivate_loop
+  - active_loop: null
+  - action: utter_affirm_stop
+
+- story: ask_water_line + stop
+  steps:
+  - intent: draw_water_level_and_flow_relationship_line_by_name
+  - action: water_line_place_form
+  - active_loop:  water_line_place_form
+  - intent: stop
+  - action: utter_ask_continue
+  - or:
+    - intent: stop
+    - intent: affirm
+  - action: action_deactivate_loop
+  - active_loop: null
+  - slot_was_set:
+    - requested_slot: null
+  - action: utter_affirm_stop
+
+- story: ask_water_line + continue
+  steps:
+  - intent: draw_water_level_and_flow_relationship_line_by_name
+  - action: water_line_place_form
+  - active_loop:  water_line_place_form
+  - intent: stop
+  - action: utter_ask_continue
+  - intent: deny
+  - action: utter_deny_stop
+  - action: water_line_place_form
+  - active_loop:  water_line_place_form
+  - slot_was_set:
+    - requested_slot: water_line_place
+  - slot_was_set:
+    - water_line_place: 沙市
+  - slot_was_set:
+    - requested_slot: null
+  - active_loop: null
+  - action: action_draw_water_level_and_flow_relationship_line_by_name

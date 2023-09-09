@@ -1,56 +1,3 @@
-# This files contains your custom actions which can be used to run
-# custom Python code.
-#
-# See this guide on how to implement these action:
-# https://rasa.com/docs/rasa/custom-actions
-
-
-# This is a simple example for a custom action which utters "Hello World!"
-
-# from typing import Any, Text, Dict, List
-#
-# from rasa_sdk import Action, Tracker
-# from rasa_sdk.executor import CollectingDispatcher
-#
-#
-# class ActionHelloWorld(Action):
-#
-#     def name(self) -> Text:
-#         return "action_hello_world"
-#
-#     def run(self, dispatcher: CollectingDispatcher,
-#             tracker: Tracker,
-#             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-#
-#         dispatcher.utter_message(text="Hello World!")
-#
-#         return []
-
-# from typing import Any, Text, Dict, List
-
-# from rasa_sdk import Action, Tracker
-# from rasa_sdk.executor import CollectingDispatcher
-# from rasa_sdk.forms import FormAction
-# import requests
-
-# class ActionWeatherAPI(Action):
-#     def name(self) -> Text:
-#         return "action_weather_api"
-
-#     def run(self, dispatcher: CollectingDispatcher,
-#             tracker: Tracker,
-#             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-#         location = tracker.get_slot('location')
-#         api_key = "7a2f481009dc95e40c26d42351201246"
-#         api_url = f"http://api.openweathermap.org/data/2.5/weather?q={location}&appid={api_key}&units=metric&lang=zh_cn"
-#         response = requests.get(api_url)
-#         response_json = response.json()
-#         weather_description = response_json["weather"][0]["description"]
-#         temperature = response_json["main"]["temp"]
-#         weather_info = f"天气：{weather_description}，温度：{temperature}°C"
-#         dispatcher.utter_message(template="utter_weather_info", weather_info=weather_info)
-#         return []
-
 import requests
 import pymysql
 from py2neo import Graph, Node, Relationship, NodeMatcher, RelationshipMatcher
@@ -109,7 +56,6 @@ class ActionSearchPrecipitationByName(Action):
         
         place=tracker.get_slot("place")
 
-        # dispatcher.utter_message(f"{place}")
   
         # 连接数据库
         conn = pymysql.connect(host='43.142.246.112', port=3306, user='common', password='common666', db='hydrology', charset='utf8')
@@ -231,7 +177,7 @@ class ActionDrawWaterLevelAndFlowRelationshipLine(Action):
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        place=tracker.get_slot("place")
+        place=tracker.get_slot("water_line_place")
 
         conn = pymysql.connect(host='43.142.246.112', port=3306, user='common', password='common666', db='hydrology', charset='utf8')
         cur = conn.cursor(pymysql.cursors.DictCursor) # 生成游标对象
@@ -266,5 +212,5 @@ class ActionDrawWaterLevelAndFlowRelationshipLine(Action):
 
         cur.close()
         conn.close()
-        
-        return []
+        dispatcher.utter_message(f"已查询到{place}的水位流量关系曲线")
+        return [SlotSet("water_line_place", None)]

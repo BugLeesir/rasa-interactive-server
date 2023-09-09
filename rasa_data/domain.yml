@@ -19,7 +19,9 @@ intents:
   - give_source_and_destination_station
   - stop
   - affirm
+  - deny
   - draw_water_level_and_flow_relationship_line_by_name
+  - give_water_line_place
 actions:
   - action_get_knowledge_graph
   - action_search_hydrometric_station_by_name
@@ -37,9 +39,6 @@ responses:
   utter_goodbye:
     - text: "再见！"
   utter_iamabot:
-    - text: "I am a bot, powered by Rasa."
-    - text: "I'm a bot, my name is Rasa."
-    - text: "I'm a bot, my name is Rasa, I'm here to help you."
     - text: 我是一个机器人，我的名字是Rasa，我在这里帮助你。
     - text: 我是一个机器人，我的名字是Rasa。
     - text: 我是一个AI，我的名字是Rasa，我在这里帮助你。
@@ -53,16 +52,21 @@ responses:
     - text: 请告诉我你要查询的地点
   utter_ask_continue:
     - text: 你确定要终止吗
-    - text: 你确定吗
     - text: 你确定现在停止吗
+    - text: 你确定要停止吗
   utter_affirm_stop:
-    - text: 好的，已经停止了
+    - text: 好的,那我们聊点别的吧
+  utter_ask_water_line_place:
+    - text: 请告诉我你要查询那里的流量水位关系线
+  utter_deny_stop:
+    - text: 好的,为您继续查询
 
 entities:
   - stationName
   - place
   - source_station
   - destination_station
+  - water_line_place
   
 slots:
   stationName:
@@ -97,6 +101,15 @@ slots:
       conditions:
       - active_loop: flood_time_form
         requested_slot: destination_station
+  water_line_place:
+    type: text
+    influence_conversation: true
+    mappings:
+    - type: from_entity
+      entity: water_line_place
+      conditions:
+      - active_loop: water_line_place_form
+        requested_slot: water_line_place
 
 forms:
   flood_time_form:
@@ -106,6 +119,9 @@ forms:
   place_form:
     required_slots:
     - place
+  water_line_place_form:
+    required_slots:
+    - water_line_place
 
 session_config:
   session_expiration_time: 60
