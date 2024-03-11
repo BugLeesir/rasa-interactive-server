@@ -2,14 +2,19 @@ digraph  {
 0 [class="start active", fillcolor=green, fontsize=12, label=START, style=filled];
 "-1" [class=end, fillcolor=red, fontsize=12, label=END, style=filled];
 1 [class=active, fontsize=12, label=action_session_start];
-2 [class=active, fontsize=12, label=action_default_fallback];
-3 [class=active, fontsize=12, label=action_session_start];
-4 [class="intent dashed active", label="  ?  ", shape=rect];
-5 [class="intent active", fillcolor=lightblue, label="/a", shape=rect, style=filled];
+2 [class=active, fontsize=12, label=action_search_hydrometric_station_by_name];
+3 [class=active, fontsize=12, label=utter_thanks];
+5 [class="intent dashed active", label="  ?  ", shape=rect];
+6 [class="intent active", fillcolor=lightblue, label="/search_hydrometric_station_by_name", shape=rect, style=filled];
+7 [class="intent active", fillcolor=lightblue, label="/give_place", shape=rect, style=filled];
+8 [class="intent active", fillcolor=lightblue, label="/give_place", shape=rect, style=filled];
 0 -> "-1"  [class="", key=NONE, label=""];
 0 -> 1  [class=active, key=NONE, label=""];
-1 -> 5  [class=active, key=0];
-2 -> 3  [class=active, key=NONE, label=""];
-3 -> 4  [class=active, key=NONE, label=""];
-5 -> 2  [class=active, key=0];
+1 -> 6  [class=active, key=0];
+2 -> 7  [class=active, key=0];
+3 -> 5  [class=active, key=NONE, label=""];
+3 -> 8  [class=active, key=0];
+6 -> 2  [class=active, key=0];
+7 -> 3  [class=active, key=0];
+8 -> 3  [class=active, key=0];
 }
