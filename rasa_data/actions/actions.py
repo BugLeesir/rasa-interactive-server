@@ -24,7 +24,7 @@ class ActionSearchHydrometricStationByName(Action):
         # dispatcher.utter_message(f"名字是{stationName}")
 
         # 连接数据库
-        conn = pymysql.connect(host='43.142.246.112', port=3306, user='common', password='common666', db='hydrology', charset='utf8')
+        conn = pymysql.connect(host='43.142.246.112', port=3306, user='root', password='123456', db='hydrology', charset='utf8')
         cur = conn.cursor(pymysql.cursors.DictCursor) # 生成游标对象
         sql=f"select * from hydrometric_station where name='{stationName}'"
         cur.execute(sql)
@@ -58,7 +58,7 @@ class ActionSearchPrecipitationByName(Action):
 
   
         # 连接数据库
-        conn = pymysql.connect(host='43.142.246.112', port=3306, user='common', password='common666', db='hydrology', charset='utf8')
+        conn = pymysql.connect(host='43.142.246.112', port=3306, user='root', password='123456', db='hydrology', charset='utf8')
         cur = conn.cursor(pymysql.cursors.DictCursor) # 生成游标对象
         sql=f"select * from hydrometric_station where name='{place}'"
         cur.execute(sql)
@@ -179,7 +179,7 @@ class ActionDrawWaterLevelAndFlowRelationshipLine(Action):
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         place=tracker.get_slot("water_line_place")
 
-        conn = pymysql.connect(host='43.142.246.112', port=3306, user='common', password='common666', db='hydrology', charset='utf8')
+        conn = pymysql.connect(host='43.142.246.112', port=3306, user='root', password='123456', db='hydrology', charset='utf8')
         cur = conn.cursor(pymysql.cursors.DictCursor) # 生成游标对象
         sql=f"select * from waterlevel where station_id in (select station_id from hydrometric_station where name='{place}' )"
         cur.execute(sql)
