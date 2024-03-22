@@ -22,6 +22,7 @@ intents:
   - deny
   - draw_water_level_and_flow_relationship_line_by_name
   - give_water_line_place
+  - search_latest_flow_rate
 actions:
   - action_get_knowledge_graph
   - action_search_hydrometric_station_by_name
@@ -30,6 +31,7 @@ actions:
   - action_get_flood_time
   - action_reset_source_station_slot
   - action_draw_water_level_and_flow_relationship_line_by_name 
+  - action_search_latest_flow_rate_by_name
 
 responses:
   utter_greet:
@@ -110,6 +112,11 @@ slots:
       conditions:
       - active_loop: water_line_place_form
         requested_slot: water_line_place
+  flow_rate_ask_condition:
+    type: text
+    mappings:
+    - type: from_text
+
 
 forms:
   flood_time_form:

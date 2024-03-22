@@ -214,3 +214,14 @@ stories:
     - requested_slot: null
   - active_loop: null
   - action: action_draw_water_level_and_flow_relationship_line_by_name
+
+- story: ask_latest_flow_rate_by_name
+  steps:
+  - intent: search_latest_flow_rate
+  - slot_was_set:
+    - flow_rate_ask_condition: latest_flow_rate
+  - action: utter_ask_place
+  - intent: give_place
+  - action: action_fill_place_by_latest_massage
+  - active_loop: place_form
+  - action: action_search_latest_flow_rate_by_name

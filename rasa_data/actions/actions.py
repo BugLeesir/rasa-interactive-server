@@ -95,6 +95,7 @@ class ActionFillPlaceByLatestMassage(Action):
         
         place=tracker.latest_message.get('text') # 将用户回答作为用户的位置
 
+        print(place)
         # 将槽填充
         return [SlotSet('place',place)]
     
@@ -214,3 +215,25 @@ class ActionDrawWaterLevelAndFlowRelationshipLine(Action):
         conn.close()
         dispatcher.utter_message(f"已查询到{place}的水位流量关系曲线")
         return [SlotSet("water_line_place", None)]
+    
+    class ActionSearchLatestFlowRateByName(Action):
+        def name(self) -> Text:
+            return "action_search_latest_flow_rate_by_name"
+        def run(self, dispatcher: CollectingDispatcher,
+                tracker: Tracker,
+                domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+            place=tracker.get_slot("place")
+            conn = pymysql.connect(host='localhost', port=3306, user='root', password='143323', db='hydrology', charset='utf8')
+            cur = conn.cursor(pymysql.cursors.DictCursor)
+            # 从waterlevel表中查询流量值,按照time降序排列，取第一个值
+            sql=f"select * from waterlevel where station_id in (select station_id from hydrometric_station where name='{place}' ) order by time desc limit 1"
+            cur.execute(sql)
+            w=cur.fetchall()
+            if w:
+                data_item = w[0]
+                dispatcher.utter_message(f"{place}的流量是{data_item['flow_rate']} m^3/s")
+            else:
+                dispatcher.utter_message("未查询到该地的流量，抱歉")
+            cur.close()
+            conn.close()
+            return [SlotSet("place", None)]

@@ -1,0 +1,52 @@
+[
+  {
+    "tag_name": "entity",
+    "ids_to_tags": {
+      "1": "B-destination_station",
+      "2": "I-destination_station",
+      "3": "L-destination_station",
+      "4": "U-destination_station",
+      "5": "B-place",
+      "6": "I-place",
+      "7": "L-place",
+      "8": "U-place",
+      "9": "B-source_station",
+      "10": "I-source_station",
+      "11": "L-source_station",
+      "12": "U-source_station",
+      "13": "B-stationName",
+      "14": "I-stationName",
+      "15": "L-stationName",
+      "16": "U-stationName",
+      "17": "B-water_line_place",
+      "18": "I-water_line_place",
+      "19": "L-water_line_place",
+      "20": "U-water_line_place",
+      "0": "O"
+    },
+    "tags_to_ids": {
+      "B-destination_station": 1,
+      "I-destination_station": 2,
+      "L-destination_station": 3,
+      "U-destination_station": 4,
+      "B-place": 5,
+      "I-place": 6,
+      "L-place": 7,
+      "U-place": 8,
+      "B-source_station": 9,
+      "I-source_station": 10,
+      "L-source_station": 11,
+      "U-source_station": 12,
+      "B-stationName": 13,
+      "I-stationName": 14,
+      "L-stationName": 15,
+      "U-stationName": 16,
+      "B-water_line_place": 17,
+      "I-water_line_place": 18,
+      "L-water_line_place": 19,
+      "U-water_line_place": 20,
+      "O": 0
+    },
+    "num_tags": 21
+  }
+]
