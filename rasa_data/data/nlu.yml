@@ -42,6 +42,12 @@ nlu:
     - 不行
     - 还是不了
 
+- intent: ask_joke
+  examples: |
+    - 讲个笑话给我听
+    - 我想听笑话
+    - 你知道什么好笑的笑话吗？
+    - 来个笑话
 # - intent: inform
 #   examples: |
 #     - 我想知道关于防洪减灾的信息
