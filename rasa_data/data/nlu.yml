@@ -258,3 +258,11 @@ nlu:
     - [桃江](water_line_place)水位流量
     - [枝城](water_line_place)水位流量
     - [益阳](water_line_place)水位流量
+
+- intent: search_latest_flow_rate
+  examples: |
+    - 查询最新流量
+    - 我想查询河道站流量
+    - 流量查询
+    - 河道站流量
+    - 查询河道站流量
