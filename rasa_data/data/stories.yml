@@ -149,7 +149,7 @@ stories:
   - slot_was_set:
     - requested_slot: source_station
   - slot_was_set:
-    - source_station: 桃江
+    - source_station: 长恒
   - intent: stop
   - action: utter_ask_continue
   - intent: deny
@@ -225,3 +225,5 @@ stories:
   - action: action_fill_place_by_latest_massage
   - active_loop: place_form
   - action: action_search_latest_flow_rate_by_name
+  - slot_was_set:
+    - flow_rate_ask_condition: null
