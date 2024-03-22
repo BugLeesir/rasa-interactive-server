@@ -114,3 +114,10 @@ rules:
   - intent: give_place
   - action: action_fill_place_by_latest_massage
   - action: action_search_latest_flow_rate_by_name
+
+- rule: Always utter_ask_place after search_latest_flow_rate
+  steps:
+  - intent: search_latest_flow_rate
+  - slot_was_set:
+    - flow_rate_ask_condition: latest_flow_rate
+  - action: utter_ask_place
