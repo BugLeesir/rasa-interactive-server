@@ -240,7 +240,7 @@ class ActionDrawWaterLevelAndFlowRelationshipLine(Action):
             return [SlotSet("place", None)]
 
 
-       class ActionTellJoke(Action):
+    class ActionTellJoke(Action):
            def name(self):
                return "action_tell_joke"
 
