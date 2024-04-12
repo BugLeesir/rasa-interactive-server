@@ -23,6 +23,7 @@ intents:
   - draw_water_level_and_flow_relationship_line_by_name
   - give_water_line_place
   - search_latest_flow_rate
+  - ask_joke
 actions:
   - action_get_knowledge_graph
   - action_search_hydrometric_station_by_name
@@ -32,7 +33,7 @@ actions:
   - action_reset_source_station_slot
   - action_draw_water_level_and_flow_relationship_line_by_name 
   - action_search_latest_flow_rate_by_name
-
+  - action_tell_joke
 responses:
   utter_greet:
     - text: "你好！有什么我可以帮你的吗？"

@@ -121,3 +121,7 @@ rules:
   - slot_was_set:
     - flow_rate_ask_condition: latest_flow_rate
   - action: utter_ask_place
+- rule: tell a joke
+  steps:
+    - intent: ask_joke
+    - action: action_tell_joke

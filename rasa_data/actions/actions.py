@@ -1,17 +1,16 @@
+import random
 import requests
-import pymysql
-from py2neo import Graph, Node, Relationship, NodeMatcher, RelationshipMatcher
-import pandas as pd
-import json
+from py2neo import Graph
 from typing import Any, Text, Dict, List
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
-from rasa_sdk.types import DomainDict
 from rasa_sdk.events import SlotSet
 import numpy as np
 import scipy.optimize as opt
 import matplotlib.pyplot as plt
+import random
 
+serverUrl = "http://207.46.143.24:43599"
 class ActionSearchHydrometricStationByName(Action):
     def name(self) -> Text:
         return "action_search_hydrometric_station_by_name"
@@ -24,15 +23,11 @@ class ActionSearchHydrometricStationByName(Action):
         # dispatcher.utter_message(f"名字是{stationName}")
 
         # 连接数据库
-        conn = pymysql.connect(host='localhost', port=3306, user='root', password='143323', db='hydrology', charset='utf8')
-        cur = conn.cursor(pymysql.cursors.DictCursor) # 生成游标对象
-        sql=f"select * from hydrometric_station where name='{stationName}'"
-        cur.execute(sql)
-        data=cur.fetchall()
-        cur.close()
-        conn.close()
+        param = {'name': stationName}
+        data = requests.get(serverUrl + "/hydrometric_station_by_name", params=param).json()
         if data :
-            data_item = data[0]  # 获取列表中的第一个字典
+            data_item_list = data['hydrometric_station']  # 获取列表中的第一个字典
+            data_item = data_item_list[0]
             dispatcher.utter_message(f"已查询到河道站")
             dispatcher.utter_message(f"河道站编号：{data_item['station_id']}")
             dispatcher.utter_message(f"河道站名称：{data_item['name']}")
@@ -58,29 +53,26 @@ class ActionSearchPrecipitationByName(Action):
 
   
         # 连接数据库
-        conn = pymysql.connect(host='localhost', port=3306, user='root', password='143323', db='hydrology', charset='utf8')
-        cur = conn.cursor(pymysql.cursors.DictCursor) # 生成游标对象
-        sql=f"select * from hydrometric_station where name='{place}'"
-        cur.execute(sql)
-        data=cur.fetchall()
+        param = {'name': place}
+        data = requests.get(serverUrl + "/hydrometric_station_by_name", params=param).json()
 
         if data :
-            data_item = data[0]  # 获取列表中的第一个字典
+            data_item_list = data['hydrometric_station']  # 获取列表中的第一个字典
+            data_item = data_item_list[0]
             station_id=data_item['station_id']
-            sql=f"select * from waterlevel where station_id={station_id}"  
-            cur.execute(sql)
-            data=cur.fetchall()
+
+            param = {'stationId': station_id}
+            data = requests.get(serverUrl + "/waterlevel_by_id", params=param).json()
+            #
             if data :
-                data_item = data[0]
+                data_item_list = data['waterlevel'] 
+                data_item = data_item_list[0]
                 dispatcher.utter_message(f"{place}的降水量是 {data_item['precipitation'] } mm")
             else :
                 dispatcher.utter_message("未查询到该地的降水量，抱歉")
         else :
             dispatcher.utter_message("未查询到该地的降水量，抱歉")    
-        
-        cur.close()
-        conn.close()
-        
+            
         resetSlot=None # 将槽重置
 
         return[SlotSet('place', resetSlot)]
@@ -91,7 +83,6 @@ class ActionFillPlaceByLatestMassage(Action):
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        
         
         place=tracker.latest_message.get('text') # 将用户回答作为用户的位置
 
@@ -179,17 +170,24 @@ class ActionDrawWaterLevelAndFlowRelationshipLine(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         place=tracker.get_slot("water_line_place")
+        # 连接数据库
+        param = {'name': place}
+        data = requests.get(serverUrl + "/hydrometric_station_by_name", params=param).json()
+        data_item_list = ""
+        if data :
+            data_item_list = data['hydrometric_station']  # 获取列表中的第一个字典
+            data_item = data_item_list[0]
+            station_id=data_item['station_id']
 
-        conn = pymysql.connect(host='localhost', port=3306, user='root', password='143323', db='hydrology', charset='utf8')
-        cur = conn.cursor(pymysql.cursors.DictCursor) # 生成游标对象
-        sql=f"select * from waterlevel where station_id in (select station_id from hydrometric_station where name='{place}' )"
-        cur.execute(sql)
-        w=cur.fetchall()
-
-
-
-        stage = np.array([d["water_level"] for d in w]) # 提取水位值
-        discharge = np.array([d["flow_rate"] for d in w]) # 提取流量值
+            param = {'stationId': station_id}
+            data = requests.get(serverUrl + "/waterlevel_by_id", params=param).json()
+            #
+            
+            if data :
+                data_item_list = data['waterlevel'] 
+                
+        stage = np.array([d["water_level"] for d in data_item_list]) # 提取水位值
+        discharge = np.array([d["flow_rate"] for d in data_item_list]) # 提取流量值
 
         # 定义模型函数
         def model(x, a, b):
@@ -204,15 +202,11 @@ class ActionDrawWaterLevelAndFlowRelationshipLine(Action):
         plt.plot(stage, discharge, "bo", label="actual") # 绘制实际数据点，蓝色圆点
         plt.plot(stage, model(stage, a, b), "r-", label="fit") # 绘制拟合曲线，红色实线
         plt.title("WaterLevelAndFlowRelationshipLine") # 添加标题
-        plt.xlabel("waterlevel（m）") # 添加x轴标签
-        plt.ylabel("flowrate（m^3 /s）") # 添加y轴标签
+        plt.xlabel("waterlevel(m)") # 添加x轴标签
+        plt.ylabel("flowrate(m^3 /s)") # 添加y轴标签
         plt.legend() # 添加图例
         plt.savefig('savefig_example.png')
 
-
-
-        cur.close()
-        conn.close()
         dispatcher.utter_message(f"已查询到{place}的水位流量关系曲线")
         return [SlotSet("water_line_place", None)]
     
@@ -223,19 +217,24 @@ class ActionDrawWaterLevelAndFlowRelationshipLine(Action):
                 tracker: Tracker,
                 domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
             place=tracker.get_slot("place")
-            conn = pymysql.connect(host='localhost', port=3306, user='root', password='143323', db='hydrology', charset='utf8')
-            cur = conn.cursor(pymysql.cursors.DictCursor)
-            # 从waterlevel表中查询流量值,按照time降序排列，取第一个值
-            sql=f"select * from waterlevel where station_id in (select station_id from hydrometric_station where name='{place}' ) order by time desc limit 1"
-            cur.execute(sql)
-            w=cur.fetchall()
-            if w:
-                data_item = w[0]
+        # 连接数据库
+            param = {'name': place}
+            data = requests.get(serverUrl + "/hydrometric_station_by_name", params=param).json()
+
+            if data :
+                data_item_list = data['hydrometric_station']  # 获取列表中的第一个字典
+                data_item = data_item_list[0]
+                station_id=data_item['station_id']
+
+            param = {'stationId': station_id}
+            data = requests.get(serverUrl + "/waterlevel_by_id", params=param).json()
+            #
+            if data :
+                data_item_list = data['waterlevel'] 
+                data_item = data_item_list[0]
                 dispatcher.utter_message(f"{place}的流量是{data_item['flow_rate']} m^3/s")
             else:
                 dispatcher.utter_message("未查询到该地的流量，抱歉")
-            cur.close()
-            conn.close()
             return [SlotSet("place", None)]
 
 
