@@ -1,4 +1,4 @@
-name: Deploy to Server
+name: Deploy to Server Actions
 
 on:
   push:
@@ -24,7 +24,7 @@ jobs:
         sudo su
         git pull
         cd /home/1007878154/rasa-project-for-windows/rasa_data
-        screen -S rasa-sdk -X quit
+        screen -S rasa-run-actions -X quit
         cd /home/1007878154/rasa-project-for-windows/rasa_data
-        screen -S rasa-sdk -d -m rasa run --enable-api --cors "*"
+        screen -S rasa-run-actinos -d -m rasa run actions
         EOF
