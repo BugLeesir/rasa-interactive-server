@@ -1,0 +1,34 @@
+name: Deploy to Server
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Install SSH key
+      uses: webfactory/ssh-agent@v0.5.3
+      with:
+        ssh-private-key: ${{ secrets.RASA_SERVER }}
+
+    - name: Deploy to Server
+      run: |
+        ssh -o StrictHostKeyChecking=no -p 22 bugleesir@207.46.143.24 <<EOF
+        sudo su
+        cd /home/1007878154/rasa-project-for-windows/rasa_data
+        screen -S rasa-run-actions -X quit
+        git pull
+        cd /home/1007878154/rasa-project-for-windows/rasa_data
+        screen -S rasa-run-actinos -d -m rasa run actions
+        cd /home/1007878154/rasa-project-for-windows/rasa_data
+        screen -S rasa-sdk -X quit
+        cd /home/1007878154/rasa-project-for-windows/rasa_data
+        screen -S rasa-sdk -d -m rasa run --enable-api --cors "*"
+        EOF
