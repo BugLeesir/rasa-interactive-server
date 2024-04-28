@@ -22,8 +22,8 @@ jobs:
       run: |
         ssh -o StrictHostKeyChecking=no -p 22 bugleesir@207.46.143.24 <<EOF
         sudo su
-        git pull
         cd /home/1007878154/rasa-project-for-windows/rasa_data
+        git pull
         screen -S rasa-run-actions -X quit
         cd /home/1007878154/rasa-project-for-windows/rasa_data
         screen -S rasa-run-actinos -d -m rasa run actions
