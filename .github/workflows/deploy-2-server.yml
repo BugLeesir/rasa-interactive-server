@@ -24,7 +24,7 @@ jobs:
         sudo su
         cd /home/1007878154/rasa-project-for-windows/rasa_data
         git pull
-        screen -S rasa-sdk -X quit
+        screen -S 115000 -X quit
         cd /home/1007878154/rasa-project-for-windows/rasa_data
-        screen -S rasa-sdk -d -m rasa run --enable-api --cors "*"
+        screen -S 115000 -d -m rasa run --enable-api --cors "*"
         EOF

@@ -24,7 +24,7 @@ jobs:
         sudo su
         cd /home/1007878154/rasa-project-for-windows/rasa_data
         git pull
-        screen -S rasa-run-actions -X quit
+        screen -S 115001 -X quit
         cd /home/1007878154/rasa-project-for-windows/rasa_data
-        screen -S rasa-run-actinos -d -m rasa run actions
+        screen -S 115001 -d -m rasa run actions
         EOF
