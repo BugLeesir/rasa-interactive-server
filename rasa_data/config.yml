@@ -3,7 +3,7 @@ assistant_id: 20230329-103153-tough-cycle
 language: "zh"
 pipeline:
    - name: SpacyNLP
-     model: "zh_core_web_trf"
+     model: "zh_core_web_md"
    - name: SpacyTokenizer
    - name: SpacyFeaturizer
    - name: RegexFeaturizer
